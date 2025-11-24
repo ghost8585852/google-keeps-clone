@@ -1,0 +1,42 @@
+.side-bar{
+    position: fixed;
+    margin-top: 70px;
+    height: 700px;
+    width:200px;
+    z-index: 5000;
+    transform: translateX(-110px);
+    height: fit-content;
+    transition: 0.2s ease;
+    
+}
+.side-bar:hover{
+    transform: translateX(0);
+    background-color: white;
+    height: 100vh;
+    box-shadow: 3px 0px 15px  ;
+     transition: 0.2s ease;
+}
+.side-bar-listelements{
+    list-style: none;
+    height: 300px;
+    margin-top:50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+}
+.list-contents{
+    height: 70px;
+    padding-left: 40px;
+    padding-right: 20px;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    transition: 0.6s ease;
+    
+}
+.list-contents:hover{
+    background-color: aliceblue;
+    transition: 0.6s ease;
+}

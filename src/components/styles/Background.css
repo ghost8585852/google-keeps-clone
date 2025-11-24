@@ -1,0 +1,58 @@
+.pallet-container{
+    background-color: rgb(255, 255, 255);
+    height: fit-content;
+    width: 500px;
+    bottom: -108px;
+    border-radius: 10px;
+    z-index: 1;
+    box-shadow: 0px 4px 10px;
+    border: 2px solid rgb(171, 163, 163);
+    padding: 10px;
+}
+.color-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding-left: 5px;
+    padding-right:5px ;
+}
+.color-buttons{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    border: none;
+    
+}
+.color-buttons:hover{
+    border: 1px solid rgb(72, 71, 71);
+    cursor: pointer;
+}
+.background-image-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
+   
+    gap: 2px;
+    
+}
+.background-image-buttons{
+    height: 47px;
+    width: 47px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    overflow: hidden;
+    
+}
+.background-image-buttons:hover{
+     border: 1px solid rgb(72, 71, 71);
+     cursor: pointer;
+}
+hr{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.image{
+   
+    height: 47px;
+    width: 47px;
+}
+

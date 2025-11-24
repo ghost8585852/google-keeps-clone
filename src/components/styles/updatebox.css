@@ -1,0 +1,44 @@
+.updatebox-container{
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    height: 600px;
+    width: 500px;
+    top:50%;
+    left:50%;
+    transform: translate(-50% , -50%);
+    padding: 20px 20px 0px 20px;
+    border-radius: 15px;
+    border: 2px solid rgb(218, 211, 78);
+    display: flex;
+    flex-direction: column;
+
+}
+.update-title{
+    height: 70px;
+    margin-bottom: 20px;
+    background:none;
+    padding-left: 20px;
+    font-size: 30px;
+    border: none;
+    border-bottom: 2px solid black;
+
+}
+.update-text-area{
+    height: 360px;
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.update-button{
+    width: 150px;
+    height: 50px;
+    border-radius: 30px;
+    align-self: center;
+    transition: 0.5s ease;
+}
+.update-button:hover{
+    background-color: rgb(19, 213, 243);
+    font-size: 20px;
+    transition: 0.5s ease;
+}

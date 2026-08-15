@@ -13,7 +13,8 @@ function InputDiv(props){
         content:"",
         image:null,
         backgroundColor:"",
-        
+        isdeleted:false
+
     });
 
     useEffect(()=>{
@@ -57,6 +58,8 @@ function InputDiv(props){
                     content:"",
                     image:null,
                     backgroundColor:"",
+                    isdeleted:false,
+                  
                  })
 
                  }

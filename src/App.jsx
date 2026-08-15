@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import "./App.css";
 import Nav from "./components/Nav.jsx";
 import Note from "./components/note.jsx";
@@ -8,6 +8,7 @@ import Sidebar from "./components/sidebar.jsx";
 import Masonry from "react-masonry-css";
 import Updatebox from "./components/updatebox.jsx";
 import Backgroundoptions from "./components/backgroundoptionsgrid.jsx";
+import axios from "axios";
 
 
 function App(){
@@ -17,9 +18,89 @@ function App(){
   }); // using this to create array of objects.
   
 
+
 useEffect(() => {
   localStorage.setItem("items", JSON.stringify(items));
 }, [items]);
+
+
+
+  async function getNotes(){
+     
+    try{
+      const response = await axios.get("http://localhost:3000/api/notes");
+
+      const notes = response.data.map((note)=>({
+        id:note.id,
+        title: note.title,
+        content: note.content,
+        backgroundColor: note.backgroundcolor,
+        image: note.image,
+        isdeleted:note.isdeleted
+
+      })
+    );
+
+    changeitems(notes);
+    console.log(items);
+    }catch(error){
+      console.error("could not get notes:",error);
+    }
+  } 
+
+
+
+  const syncing = useRef(false);
+
+ async function syncData(){
+
+  if(syncing.current){
+    console.log("sync is already running");
+    return;
+  }
+
+  syncing.current= true;
+   console.log("sync started");
+
+    const unsyncednotes = items.filter((item)=>item.synced === false).reverse();
+   
+
+    for(const note of unsyncednotes){
+      try{
+        await axios.post("http://localhost:3000/api/notes",
+          {
+            title:note.title,
+            content:note.content,
+            backgroundcolor:note.backgroundColor,
+            image:note.image
+          });
+          console.log("started");
+          changeitems((previous)=>
+          previous.map((item)=>
+          item.id === note.id
+            ? {...item , synced:true}
+          :item));
+          console.log("all the unsaved notes are synced successfully");
+
+      }catch(error){
+        console.log("still offline, could not sync:" ,note.title);
+
+      }
+    }
+
+    syncing.current = false;
+  }
+
+
+  useEffect(()=>{
+    async function loadData(){
+      await syncData();
+
+      await getNotes();
+    }
+
+    loadData();
+  },[]);
 
 
   const [deletedItems, setDeletedItems] = useState(() => {
@@ -38,21 +119,56 @@ useEffect(() => {
 
  
 
-  function addItem(inputhead){ // function to add new object in the array.
-    changeitems((previous)=>{
-      return inputhead.title !=="" || inputhead.content !=="" ? [...previous,inputhead]:[...previous];
-    })
+async function addItem(inputhead) {
+  if (inputhead.title === "" && inputhead.content === "") {
+    return;
+  }
+ // 1. Update React state
 
+ const savedstate = {
+  ...inputhead,
+  synced:false,
+  id: crypto.randomUUID(),
+
+ };
+
+ changeitems((previous) => [savedstate,...previous]);
+  // 2. Send the same note to your Express backend
+  try {
+    const response = await axios.post("http://localhost:3000/api/notes", {
+      title:inputhead.title,
+      content:inputhead.content,
+      backgroundcolor:inputhead.backgroundColor,
+      image:inputhead.image,
+      isdeleted:inputhead.isdeleted
+    });
+    console.log("Note saved to database");
+
+    const NewNote = response.data
+    changeitems((previous)=>
+      previous.map((item)=>
+        item.id === savedstate.id 
+          ? {...item,synced:true,id:NewNote.id}: item
+      )
+    );
+  } catch (error) {
+
+    console.error("Could not save note to database:", error);
   }
 
+  
+ 
+}
+
 function DeleteItem(id) {
-  const noteToDelete = items[id];   // get deleted note
+  const noteToDelete = items.find((item)=>item.id === id);   // get deleted note
 
   if (noteToDelete) {
     setDeletedItems(prev => [...prev, noteToDelete]); // run ONCE
   }
 
-  changeitems(prev => prev.filter((item, index) => index !== id));
+
+  changeitems(prev => prev.filter((item) => item.id !== id));
 }
 
 
@@ -119,8 +235,8 @@ function DeleteItem(id) {
     if(isNaN(eventIndex)) return;
 
     changeitems((previous)=>
-    previous.map((item,index)=>
-    index===eventIndex ? {...item,backgroundColor:eventValue}:item)
+    previous.map((item)=>
+    item.id===eventIndex ? {...item,backgroundColor:eventValue}:item)
   )
 
 
@@ -143,8 +259,8 @@ function DeleteItem(id) {
 
 
     changeitems(previous =>
-      previous.map((item,index)=>
-      index ===noteindex ? {...item, image:imagevalue==="null"? null :imagevalue} :item)
+      previous.map((item)=>
+      item.id === noteindex ? {...item, image:imagevalue==="null"? null :imagevalue} :item)
     )
 
 
@@ -185,8 +301,8 @@ function DeleteItem(id) {
       className="main-container">
         {
           items.map((x,index)=>{
-            return <Note key={index} 
-                      id={index} 
+            return <Note key={x.id} 
+                      id={x.id} 
                       title={x.title}
                       message={x.content}
                       onDelete={DeleteItem} 
@@ -213,21 +329,26 @@ function DeleteItem(id) {
         </div>
       )}
 
-      {updateboxstate !==false && (
+      {updateboxstate !==false && (()=>{
+
+        const selectNote = items.find((item)=> item.id === boxid);
+
+        return(
         <Updatebox 
         id={boxid}
-        title={items[boxid]?.title}
-        content={items[boxid]?.content} 
+        title={selectNote ?.title}
+        content={selectNote ?.content} 
         onUpdate={(updatedtitle,updatedcontent)=>{
           changeitems(prev =>
-            prev.map((item,index)=>
-              index ===boxid ? {...item, title:updatedtitle,content:updatedcontent}:item
+            prev.map((item)=>
+              item.id ===boxid ? {...item, title:updatedtitle,content:updatedcontent}:item
             )
           );
           changeUpdateboxstate(false);
         }}
-        />  
-      )}
+        />  );
+      }
+      )()}
       
 
       </div>

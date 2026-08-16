@@ -74,8 +74,8 @@ export async function UpdateNotes(req,res){
              set 
                 title = COALESCE($1 ,title),
                 content = COALESCE($2 ,content),
-                backgroundcolor = COALESCE($3 ,backgroundcolor),
-                image = COALESCE($4 ,image),
+                backgroundcolor =$3,
+                image = $4,
                 isdeleted = COALESCE($5 ,isdeleted)
                 WHERE id = $6
                 RETURNING *`,

@@ -77,6 +77,8 @@ useEffect(() => {
           await axios.patch(`http://localhost:3000/api/notes/${findid.id}`,{
             title:note.title,
             content:note.content,
+            backgroundcolor:note.backgroundColor,
+            image:note.image,
             isdeleted:note.isdeleted
             
           });
@@ -284,7 +286,7 @@ async function DeleteItem(id) {
 
     changeitems((previous)=>
     previous.map((item)=>
-    item.id===eventIndex ? {...item,backgroundColor:eventValue}:item)
+    item.id===eventIndex ? {...item,synced:false, backgroundColor:eventValue}:item)
   )
 
 
@@ -308,7 +310,7 @@ async function DeleteItem(id) {
 
     changeitems(previous =>
       previous.map((item)=>
-      item.id === noteindex ? {...item, image:imagevalue==="null"? null :imagevalue} :item)
+      item.id === noteindex ? {...item,synced:false, image:imagevalue==="null"? null :imagevalue} :item)
     )
 
 
@@ -386,13 +388,35 @@ async function DeleteItem(id) {
         id={boxid}
         title={selectNote ?.title}
         content={selectNote ?.content} 
-        onUpdate={(updatedtitle,updatedcontent)=>{
+        onUpdate={async(updatedtitle,updatedcontent)=>{
+
+
           changeitems(prev =>
             prev.map((item)=>
               item.id ===boxid ? {...item, title:updatedtitle,content:updatedcontent, synced:false,}:item
             )
           );
           changeUpdateboxstate(false);
+
+          try{
+            await axios.patch(`http://localhost:3000/api/notes/${boxid}`,{
+              title :updatedtitle,
+              content:updatedcontent
+            });
+
+            changeitems(prev =>
+              prev.map(item=>
+                item.id === boxid
+                ? {
+                  ...item, syncData:true
+                }:item
+              )
+            );
+            console.log("Note updated succesfully");
+          }catch(error) {
+            console.log("You are offline - Note will be patched later");
+          }
+          
         }}
         />  );
       }

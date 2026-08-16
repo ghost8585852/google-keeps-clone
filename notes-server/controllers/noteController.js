@@ -21,13 +21,13 @@ export async function createNotes(req,res){
     console.log("CREATE NOTES WAS CALLED");
 
     try{
-      const { title , content , backgroundcolor, image } = req.body;
+      const { title , content , backgroundcolor, image ,isdeleted } = req.body;
     const result = await pool.query(
         `INSERT INTO notes
-        (title, content, backgroundcolor, image)
-        VALUES ($1 ,$2, $3, $4)
+        (title, content, backgroundcolor, image ,isdeleted)
+        VALUES ($1 ,$2, $3, $4, $5)
         RETURNING * `,
-        [title, content, backgroundcolor, image]
+        [title, content, backgroundcolor, image, isdeleted]
     );
 
     res.status(201).json(result.rows[0]);  
@@ -66,7 +66,7 @@ export async function DeleteNote(req,res){
 }
 export async function UpdateNotes(req,res){
     const {id} = req.params;
-    const {title, content , backgroundcolor, image } = req.body;
+    const {title, content , backgroundcolor, image , isdeleted } = req.body;
 
     try{
         const result = await pool.query(
@@ -75,10 +75,11 @@ export async function UpdateNotes(req,res){
                 title = COALESCE($1 ,title),
                 content = COALESCE($2 ,content),
                 backgroundcolor = COALESCE($3 ,backgroundcolor),
-                image = COALESCE($4 ,image)
-                WHERE id = $5
+                image = COALESCE($4 ,image),
+                isdeleted = COALESCE($5 ,isdeleted)
+                WHERE id = $6
                 RETURNING *`,
-                [title, content , backgroundcolor , image , id]
+                [title, content , backgroundcolor , image ,isdeleted, id]
         );
 
         if(result.rowCount === 0){

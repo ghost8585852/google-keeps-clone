@@ -12,8 +12,8 @@ function Updatebox({id, title,content,onUpdate}){
         setNewContent(content|| "");
     },[title,content]);
 
-    function handleSave(){
-        onUpdate(newtitle, newContent);
+    async function handleSave(){
+      onUpdate(newtitle, newContent);
     }
 
     return(

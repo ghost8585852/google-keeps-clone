@@ -13,7 +13,7 @@ import axios from "axios";
 
 function App(){
   const [items,changeitems] =useState(()=>{
-    const saved = localStorage.getItem("items");
+   const saved = localStorage.getItem("items");
     return saved ? JSON.parse(saved) : [];
   }); // using this to create array of objects.
   
@@ -42,6 +42,7 @@ useEffect(() => {
     );
 
     changeitems(notes);
+    // setDeletedItems(notes.filter((item)=>item.isdeleted === true));
     console.log(items);
     }catch(error){
       console.error("could not get notes:",error);
@@ -67,18 +68,40 @@ useEffect(() => {
 
     for(const note of unsyncednotes){
       try{
-        await axios.post("http://localhost:3000/api/notes",
+        const idcheck = await axios.get("http://localhost:3000/api/notes");
+        
+        const findid = idcheck.data.find((item)=>item.id === note.id);
+
+        let serverId = note.id;
+        if(findid){
+          await axios.patch(`http://localhost:3000/api/notes/${findid.id}`,{
+            title:note.title,
+            content:note.content,
+            isdeleted:note.isdeleted
+            
+          });
+
+          serverId = findid.id;
+        }else{
+
+          const response = await axios.post("http://localhost:3000/api/notes",
           {
             title:note.title,
             content:note.content,
             backgroundcolor:note.backgroundColor,
-            image:note.image
+            image:note.image,
+            isdeleted:note.isdeleted
           });
+
+          serverId = response.data.id;
+        }
+        
+        
           console.log("started");
           changeitems((previous)=>
           previous.map((item)=>
           item.id === note.id
-            ? {...item , synced:true}
+            ? {...item ,id: serverId, synced:true}
           :item));
           console.log("all the unsaved notes are synced successfully");
 
@@ -103,16 +126,16 @@ useEffect(() => {
   },[]);
 
 
-  const [deletedItems, setDeletedItems] = useState(() => {
-  const savedDeleted = localStorage.getItem("deletedItems");
-  return savedDeleted ? JSON.parse(savedDeleted) : [];
-});
+//   const [deletedItems, setDeletedItems] = useState(() => {
+//   const savedDeleted = localStorage.getItem("deletedItems");
+//   return savedDeleted ? JSON.parse(savedDeleted) : [];
+// });
 
 
 
-useEffect(() => {
-  localStorage.setItem("deletedItems", JSON.stringify(deletedItems));
-}, [deletedItems]);
+// useEffect(() => {
+//   localStorage.setItem("deletedItems", JSON.stringify(deletedItems));
+// }, [deletedItems]);
 
 
 
@@ -160,15 +183,40 @@ async function addItem(inputhead) {
  
 }
 
-function DeleteItem(id) {
-  const noteToDelete = items.find((item)=>item.id === id);   // get deleted note
+async function DeleteItem(id) {
+  // const noteToDelete = items.find((item)=>item.id === id);   // get deleted note
 
-  if (noteToDelete) {
-    setDeletedItems(prev => [...prev, noteToDelete]); // run ONCE
+  // if (noteToDelete) {
+  //   setDeletedItems(prev => [...prev, {...noteToDelete,isdeleted:true}]); // run ONCE
+  // }
+  
+
+  changeitems(prev =>
+    prev.map(item=>
+      item.id == id 
+      ? {...item,synced:false,isdeleted:true}
+      :item
+    )
+  );
+
+  try{
+    const response = await axios.patch(`http://localhost:3000/api/notes/${id}`, {
+      isdeleted:true
+    });
+  
+   changeitems(prev =>
+      prev.map(item =>
+        item.id == id
+          ? {...item, synced:true}
+          : item
+      )
+    );
+  }catch(error){
+    console.error("Note will sync on reload ");
   }
 
+  
 
-  changeitems(prev => prev.filter((item) => item.id !== id));
 }
 
 
@@ -300,7 +348,7 @@ function DeleteItem(id) {
       breakpointCols={{ default: 5, 1100: 3, 700: 2, 500: 1 }}
       className="main-container">
         {
-          items.map((x,index)=>{
+          items.filter((item)=>item.isdeleted !== true).map((x,index)=>{
             return <Note key={x.id} 
                       id={x.id} 
                       title={x.title}
@@ -341,7 +389,7 @@ function DeleteItem(id) {
         onUpdate={(updatedtitle,updatedcontent)=>{
           changeitems(prev =>
             prev.map((item)=>
-              item.id ===boxid ? {...item, title:updatedtitle,content:updatedcontent}:item
+              item.id ===boxid ? {...item, title:updatedtitle,content:updatedcontent, synced:false,}:item
             )
           );
           changeUpdateboxstate(false);

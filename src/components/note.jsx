@@ -63,11 +63,11 @@ function Note(props){ //note  function
                         </div>
                          <button  className="pin-button" onClick={(e)=>{e.stopPropagation()}}><PushPinIcon /></button>
                     </div>
-                    <div className="note-buttons-grid" id={props.id} style={{opacity:visibilitycheck===props.id ? "100%":"0%"}} >
-                    <button className="Delete-button" id={props.id} onClick={(e)=>{e.stopPropagation();props.onDelete(props.id);props.divclose();}}><DeleteIcon  id={props.id}/></button>
-                    <button className="Edit-button" onClick={(e)=>{e.stopPropagation(); props.updatebutton(props.id); }}><EditIcon /></button>
+                    <div className="note-buttons-grid"  id={props.id} style={{opacity:visibilitycheck===props.id ? "100%":"0%"}} >
+                    <button className="Delete-button" id={props.id}  style={{display:props.del === true ? "none": "" }} onClick={(e)=>{e.stopPropagation();props.onDelete(props.id);props.divclose();}}><DeleteIcon  id={props.id}/></button>
+                    <button className="Edit-button"  style={{display:props.del === true ? "none": "" }} onClick={(e)=>{e.stopPropagation(); props.updatebutton(props.id); }}><EditIcon /></button>
                     <button className="closepreviewpage" onClick={(e)=>{e.stopPropagation(); props.divclose()}} ><CloseIcon id={props.id} /></button>
-                     <button className="note-color" id={props.id} onClick={(e)=>{e.stopPropagation(); props.colorbarCheck(props.id ,e);}} > < ColorLensIcon  /> </button>
+                     <button className="note-color" id={props.id} style={{display:props.del === true ? "none": "" }}  onClick={(e)=>{e.stopPropagation(); props.colorbarCheck(props.id ,e);}} > < ColorLensIcon  /> </button>
 
                     </div>
                     {/* <Backgroundoptions  id={props.id} stateCheck={{display:colorbarnotestate===props.id ? "block" :"none"} } onClick={(e)=>{e.stopPropagation()}} /> */}

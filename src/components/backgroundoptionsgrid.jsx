@@ -16,7 +16,7 @@ function Backgroundoptions( props){
     return(
         <div className="pallet-container" id={props.id} onClick={(e)=>{e.stopPropagation()}} >
             <div className="color-container" id={props.id}>
-                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} value=" "><InvertColorsOffOutlinedIcon /></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} value="white"><InvertColorsOffOutlinedIcon /></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#FAAFA8"}} value="#FAAFA8"></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#E2F6D3"}} value="#E2F6D3"></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#F59272"}} value="#F59272"></button>

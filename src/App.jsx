@@ -9,6 +9,7 @@ import Masonry from "react-masonry-css";
 import Updatebox from "./components/updatebox.jsx";
 import Backgroundoptions from "./components/backgroundoptionsgrid.jsx";
 import axios from "axios";
+import { Deleteiptions } from "./components/Deleteoptions.jsx";
 
 
 function App(){
@@ -272,7 +273,7 @@ async function DeleteItem(id) {
   const[palletvalue,changepalletvalue]=useState(null);
   const[palletimagevalue,changepalletimagevalue]= useState(null);
 
-  function newValue(event){ 
+async function newValue(event){ 
     
     const eventId = event.currentTarget.id;
     const eventValue= event.currentTarget.value;
@@ -280,20 +281,36 @@ async function DeleteItem(id) {
     changepalletvalue(eventValue);
     }
 
-    const eventIndex = Number(eventId);
+    const newID = Number(eventId);
 
-    if(isNaN(eventIndex)) return;
+    if(isNaN(newID)) return;
 
     changeitems((previous)=>
     previous.map((item)=>
-    item.id===eventIndex ? {...item,synced:false, backgroundColor:eventValue}:item)
+    item.id === newID ? {...item,synced:false, backgroundColor:eventValue}:item)
   )
+
+  try{
+    await axios.patch(`http://localhost:3000/api/notes/${newID}`,{
+      backgroundcolor: eventValue
+    });
+
+    changeitems(prev=>
+      prev.map(item=>
+        item.id === newID ? {...item,synced:true}:item
+      )
+    );
+
+    console.log("Note,successfully updated");
+  }catch(error){
+    console.log("offline , Note will be updated later when online ");
+  }
 
 
     // console.log(palletvalue);
   };
 
-  function imagecatcher(event){
+  async function imagecatcher(event){
 
     const eventId = event.currentTarget.id;
     const imagevalue = event.currentTarget.value;
@@ -304,14 +321,30 @@ async function DeleteItem(id) {
     }
 
 
-    const noteindex = Number(eventId);
-    if(isNaN(noteindex)) return;
+    const noteid = Number(eventId);
+    if(isNaN(noteid)) return;
 
 
     changeitems(previous =>
       previous.map((item)=>
-      item.id === noteindex ? {...item,synced:false, image:imagevalue==="null"? null :imagevalue} :item)
+      item.id === noteid ? {...item,synced:false, image:imagevalue==="null"? null :imagevalue} :item)
     )
+
+    try{
+      await axios.patch(`http://localhost:3000/api/notes/${noteid}`,{
+        image:imagevalue==="null"? null :imagevalue
+      });
+
+      changeitems(prev=>
+        prev.map(item=>
+          item.id === noteid ? {...item,synced:true}: item
+        )
+      );
+
+      console.log("New background is set successfully for the note");
+    }catch(error){
+      console.log("Your are offline , Note will be patched later when online");
+    }
 
 
     console.log(palletimagevalue);
@@ -332,6 +365,19 @@ async function DeleteItem(id) {
 
 
 
+
+  const [DeletedNotes,setDeletedNotes] = useState(false);
+
+  function Opendeleted(){
+    setDeletedNotes(true);
+  }
+
+  function Notes(){
+    setDeletedNotes(false);
+  }
+
+
+
   
 
 
@@ -340,17 +386,20 @@ async function DeleteItem(id) {
     <Nav />
     <div className="center-grid-layout">
       
-        <Sidebar />
+        <Sidebar 
+        ShowDeletednotes={Opendeleted} 
+        OpenNotes={Notes}
+        />
         <div ></div>
       
       <div className="main-content-side">
-        <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} /> 
+      {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} /> : <Deleteiptions/> }
   
       <Masonry
       breakpointCols={{ default: 5, 1100: 3, 700: 2, 500: 1 }}
       className="main-container">
         {
-          items.filter((item)=>item.isdeleted !== true).map((x,index)=>{
+          items.filter((item)=> DeletedNotes ? item.isdeleted == true : item.isdeleted !==true).map((x,index)=>{
             return <Note key={x.id} 
                       id={x.id} 
                       title={x.title}
@@ -363,6 +412,7 @@ async function DeleteItem(id) {
                       notebackcolor={x.backgroundColor}
                       selectedimage={x.image}
                       updatebutton={updatebox}
+                      del={x.isdeleted}
                     />
           })
         }

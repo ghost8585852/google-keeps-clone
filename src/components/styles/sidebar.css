@@ -11,7 +11,7 @@
 }
 .side-bar:hover{
     transform: translateX(0);
-    background-color: white;
+    background-color: rgb(65, 64, 64);
     height: 100vh;
     box-shadow: 3px 0px 15px  ;
      transition: 0.2s ease;

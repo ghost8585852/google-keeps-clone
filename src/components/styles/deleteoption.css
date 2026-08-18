@@ -1,0 +1,46 @@
+.deleteoptions-container{
+    /* background-color: red; */
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+.buttons-container{
+    /* background-color: rgb(25, 72, 114); */
+    height: 40px;
+    width: 300px;
+    align-self:flex-end;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    margin-right: 10%;
+
+}
+.delbutton-style{
+    height: 50px;
+    width: 150px;
+    border-radius: 10px;
+}
+.checkbutton-container{
+    width: 100px;
+    margin-left: 70px;
+    bottom: 0;
+    color: white;
+    display: flex;
+    position: absolute;
+
+}
+.checkboxx[type="checkbox"]{
+     -ms-transform: scale(1.4); /* IE */
+  -moz-transform: scale(1.4); /* FF */
+  -webkit-transform: scale(1.4); /* Safari and Chrome */
+  -o-transform: scale(1.4); /* Opera */
+  transform: scale(1.4);
+  padding: 10px;
+  accent-color:#F59272;
+  margin-left: 10px;
+}

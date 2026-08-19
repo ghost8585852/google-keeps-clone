@@ -167,7 +167,7 @@ async function addItem(inputhead) {
  const savedstate = {
   ...inputhead,
   synced:false,
-  id: crypto.randomUUID(),
+  id: -Date.now(),
 
  };
 

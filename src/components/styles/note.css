@@ -21,7 +21,6 @@
     
     position:relative;
     cursor: pointer;
-    border:2px solid rgb(157, 160, 161);
     transition: 0.4s ease;
 }
 .notes-container:hover{
@@ -180,4 +179,19 @@ transition: 0.6s ease;
     .notes-container{
         min-width:35vw;
     }
+ }
+
+ .select-div[type="checkbox"]{
+       -ms-transform: scale(1.4); /* IE */
+  -moz-transform: scale(1.4); /* FF */
+  -webkit-transform: scale(1.4); /* Safari and Chrome */
+  -o-transform: scale(1.4); /* Opera */
+  transform: scale(1.4);
+  padding: 10px;
+  accent-color:#df0909;
+  margin-left: 10px;
+  z-index: 100;
+  position: absolute;
+  top: -5px;
+  right: -5px;
  }

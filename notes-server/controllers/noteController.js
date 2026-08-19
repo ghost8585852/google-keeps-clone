@@ -46,7 +46,8 @@ export async function DeleteNote(req,res){
     try{
         const result = await pool.query(
             `DELETE FROM notes
-             WHERE id = $1`,
+             WHERE id = $1
+             RETURNING *`,
              [id]
         );
         if(result.rowCount === 0){

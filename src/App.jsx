@@ -42,7 +42,7 @@ useEffect(() => {
       })
     );
 
-    changeitems(notes);
+    changeitems(notes.map(item=>({...item,isselected:false})));
     // setDeletedItems(notes.filter((item)=>item.isdeleted === true));
     console.log(items);
     }catch(error){
@@ -74,7 +74,19 @@ useEffect(() => {
         const findid = idcheck.data.find((item)=>item.id === note.id);
 
         let serverId = note.id;
-        if(findid){
+
+
+        if(note.terminated === true){
+          {
+            await axios.delete(`http://localhost:3000/api/notes`,{
+              data:{
+                id:note.id
+              }
+            });
+          }
+          
+        }
+      else if(findid){
           await axios.patch(`http://localhost:3000/api/notes/${findid.id}`,{
             title:note.title,
             content:note.content,
@@ -85,7 +97,8 @@ useEffect(() => {
           });
 
           serverId = findid.id;
-        }else{
+        }
+        else{
 
           const response = await axios.post("http://localhost:3000/api/notes",
           {
@@ -187,7 +200,7 @@ async function addItem(inputhead) {
 }
 
 async function DeleteItem(id) {
-  // const noteToDelete = items.find((item)=>item.id === id);   // get deleted note
+  const noteToDelete = items.find((item)=>item.id === id);   // get deleted note
 
   // if (noteToDelete) {
   //   setDeletedItems(prev => [...prev, {...noteToDelete,isdeleted:true}]); // run ONCE
@@ -204,7 +217,8 @@ async function DeleteItem(id) {
 
   try{
     const response = await axios.patch(`http://localhost:3000/api/notes/${id}`, {
-      isdeleted:true
+      isdeleted:true,
+      image: noteToDelete.image
     });
   
    changeitems(prev =>
@@ -377,6 +391,73 @@ async function newValue(event){
   }
 
 
+  function Selectbox(event){
+    const checked = event.currentTarget.checked;
+    const selectboxId = Number(event.currentTarget.id);
+
+    console.log(selectboxId)
+    console.log(checked);
+
+    changeitems(prev=>
+      prev.map(item=>
+        item.id ===selectboxId ? {...item,isselected:checked}:item
+      )
+    );
+  }
+
+  async function recycle(){
+
+    const selectedNotes = items.filter(item=> item.isselected ===true);
+
+    changeitems(prev=>
+      prev.map(item=>
+        item.isselected === true ? {...item,isselected:false,isdeleted:false,synced:false}:item
+      )
+    );
+
+    try{
+      for(const note of selectedNotes){
+        await axios.patch(`http://localhost:3000/api/notes/${note.id}`,{
+          image:note.image,
+          isdeleted:false
+        });
+      }
+      console.log("Note is successfully recycled");
+    }catch(error){
+      console.log("offline , Note will be patched later");
+    }
+  }
+
+ async function permanentDelete(){
+
+  const selecteditems = items.filter(
+    item => item.isselected === true
+  );
+
+   changeitems(prev=>
+    prev.map(item=>
+      item.isselected === true ?
+      {...item ,synced:false, terminated:true}:item
+    )
+  );
+
+  try{
+    for(const item of selecteditems){
+      await axios.delete(`http://localhost:3000/api/notes`,{
+        data:{
+          id:item.id
+        }
+      }
+      );
+    }
+    console.log("Note, deleted permanently");
+  } catch(error){
+    console.log("offline , Note will be deleted on next sync");
+  }
+ 
+  }
+
+
 
   
 
@@ -393,13 +474,17 @@ async function newValue(event){
         <div ></div>
       
       <div className="main-content-side">
-      {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} /> : <Deleteiptions/> }
+      {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} /> :
+       <Deleteiptions
+       recycleNotes = {recycle}
+       delNotes={permanentDelete}
+       /> }
   
       <Masonry
       breakpointCols={{ default: 5, 1100: 3, 700: 2, 500: 1 }}
       className="main-container">
         {
-          items.filter((item)=> DeletedNotes ? item.isdeleted == true : item.isdeleted !==true).map((x,index)=>{
+          items.filter((item)=> DeletedNotes ? item.isdeleted == true && item.terminated !== true  : item.isdeleted !==true).map((x,index)=>{
             return <Note key={x.id} 
                       id={x.id} 
                       title={x.title}
@@ -413,6 +498,9 @@ async function newValue(event){
                       selectedimage={x.image}
                       updatebutton={updatebox}
                       del={x.isdeleted}
+                      selectNote={Selectbox}
+                      show={DeletedNotes}
+                      selectState={x.isselected}
                     />
           })
         }

@@ -7,7 +7,7 @@ export function Deleteiptions(props){
 
             <div className="checkbutton-container">
                 <p>Select All</p>
-                <input className="checkboxx" type="checkbox"/>
+                <input className="checkboxx" onClick={(e)=>{e.stopPropagation()} }  onChange={props.selectAll} checked={props.selectreset} type="checkbox"/>
             </div>
 
 

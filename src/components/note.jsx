@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import EditIcon from '@mui/icons-material/Edit';
 import PushPinIcon from '@mui/icons-material/PushPin';
+import Markdown from "react-markdown";
 import SaveIcon from '@mui/icons-material/Save';
 import {motion ,AnimatePresence} from "framer-motion";
 
@@ -36,7 +37,7 @@ function Note(props){ //note  function
                 layout
                 // whileHover={{scale:1.02, duration:0.3}}
                 transition={{
-                    layout:{duration:0.5,type:"tween",stiffness:20,damping:5}
+                    layout:{duration:0.5,type:"tween",stiffness:10,damping:2}
                 }}
                 onMouseEnter={()=>changeVisibility(true)}
                 onMouseLeave={()=>changeVisibility(false)}
@@ -48,8 +49,11 @@ function Note(props){ //note  function
                         <div className="top" id={props.id}>
                         <h1 className="Note-heading" id={props.id}>{props.title}</h1> 
                         </div>
-                        <div className="bottom" id={props.id}>
-                            <p id={props.id} >{props.message}</p>
+                        <div className="bottom" style={props.oncheckid === props.id ? {overflow:"auto"}:{overflow:""}} id={props.id}>
+                            <Markdown>
+                              {props.message} 
+                            </Markdown>
+                            
                         </div>
                          <button  className="pin-button" onClick={(e)=>{e.stopPropagation()}}><PushPinIcon /></button>
                     </div>
@@ -60,7 +64,7 @@ function Note(props){ //note  function
                      <button className="note-color" id={props.id} style={{display:props.del === true ? "none": "" }}  onClick={(e)=>{e.stopPropagation(); props.colorbarCheck(props.id ,e);}} > < ColorLensIcon  /> </button>
 
                     </div>
-                    <input id={props.id } onChange={props.selectNote} onClick={(e)=>{e.stopPropagation()}} type="checkbox" className="select-div" style={{display: props.show === true ? "" : "none"}} />
+                    <input id={props.id } onChange={props.selectNote} onClick={(e)=>{e.stopPropagation()}} type="checkbox" className="select-div" style={{display: props.show === true ? "" : "none"}} checked={props.selectState || false } />
                     {/* <Backgroundoptions  id={props.id} stateCheck={{display:colorbarnotestate===props.id ? "block" :"none"} } onClick={(e)=>{e.stopPropagation()}} /> */}
 
                 </motion.div>

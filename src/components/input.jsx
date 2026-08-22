@@ -4,7 +4,15 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import ImageIcon from '@mui/icons-material/Image';
-
+import FormatColorTextIcon from '@mui/icons-material/FormatColorText'; 
+import {useEditor,EditorContent} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { Markdown } from "@tiptap/markdown";
+import Placeholder from "@tiptap/extension-placeholder";
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 
 function InputDiv(props){
 
@@ -60,7 +68,9 @@ function InputDiv(props){
                     backgroundColor:"",
                     isdeleted:false,
                     isselected:false
-                 })
+                 });
+
+                 editor?.commands.clearContent();
 
                  }
     }
@@ -90,6 +100,22 @@ function InputDiv(props){
         // console.log(palletState);
     // }
 
+const editor = useEditor({
+    extensions: [
+        StarterKit,
+        Markdown,
+         Placeholder.configure({
+            placeholder: "Content ...",
+        }),
+    ],
+    content: "",
+    onUpdate: ({ editor }) => {
+        newinput(previous => ({
+            ...previous,
+            content: editor.getMarkdown()
+        }));
+    },
+});
 
 
 
@@ -98,10 +124,74 @@ function InputDiv(props){
         <>
         <div className="inputDiv-container" style={{display: clicktracker ? " " :"none",backgroundColor:inputhead.backgroundColor===" " ? "" : inputhead.backgroundColor}}>
             <h1 className="inputheading">Add note</h1>
-            <input name="title" value={inputhead.title} className="add-input" onChange={inputcheck} placeholder="Title"></input>
-            <textarea name="content"  value={inputhead.content} className="add-input" onChange={inputcheck} placeholder="Content ..."></textarea>
+            <input name="title" value={inputhead.title} className="add-input title-div" onChange={inputcheck} placeholder="Title"></input>
+            {/* <textarea name="content"  value={inputhead.content} className="add-input content-div" onChange={inputcheck} placeholder="Content ..."></textarea> */}
+
+            <EditorContent  className="add-input content-div" editor={editor}/>
+
+            <div className="editor-toolbar" style={props.tool === true ? {display:""}:{display:"none"}}>
+
+    <button
+        className="editor-buttons"
+        type="button"
+        onClick={() => editor.chain().focus().toggleBold().run()}
+    >
+        <FormatBoldIcon/>
+    </button>
+
+    <button
+        className="editor-buttons"
+        type="button"
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+    >
+        <FormatItalicIcon/>
+    </button>
+
+    <button
+        className="editor-buttons"
+        type="button"
+        onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+        }
+    >
+        H1
+    </button>
+
+    <button
+        className="editor-buttons"
+        type="button"
+        onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+        }
+    >
+        H2
+    </button>
+
+    <button
+        className="editor-buttons"
+        type="button"
+        onClick={() =>
+            editor.chain().focus().toggleBulletList().run()
+        }
+    >
+        <FormatListBulletedIcon/>
+    </button>
+
+    <button
+        className="editor-buttons"
+        type="button"
+        onClick={() =>
+            editor.chain().focus().toggleOrderedList().run()
+        }
+    >
+        <FormatListNumberedIcon/>
+    </button>
+
+</div>
+
             <div className="input-screen-buttons ">
                 <button className="All-input-buttons-style input-a" id={props.id} onClick={(e)=>{e.stopPropagation(); props.colorbarOpener(props.id,e)}}><ColorLensIcon className="buttons-image-size-input-container"/></button>
+                <button className="All-input-buttons-style" onClick={(e)=>{e.stopPropagation(); props.opentoolbar()}}><FormatColorTextIcon className="buttons-image-size-input-container"/></button>
                 <button className="All-input-buttons-style input-b"><ImageIcon  className="buttons-image-size-input-container"/></button>
                
             </div>

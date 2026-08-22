@@ -172,6 +172,7 @@ async function addItem(inputhead) {
  };
 
  changeitems((previous) => [savedstate,...previous]);
+  settoolbar(false);
   // 2. Send the same note to your Express backend
   try {
     const response = await axios.post("http://localhost:3000/api/notes", {
@@ -388,6 +389,13 @@ async function newValue(event){
 
   function Notes(){
     setDeletedNotes(false);
+
+    changeitems(prev=>
+      prev.map(item=>
+        item.isselected === true ? {...item, isselected:false}:item
+      )
+    );
+
   }
 
 
@@ -415,6 +423,8 @@ async function newValue(event){
       )
     );
 
+    setselectall(false);
+
     try{
       for(const note of selectedNotes){
         await axios.patch(`http://localhost:3000/api/notes/${note.id}`,{
@@ -433,6 +443,8 @@ async function newValue(event){
   const selecteditems = items.filter(
     item => item.isselected === true
   );
+
+  setselectall(false);
 
    changeitems(prev=>
     prev.map(item=>
@@ -456,7 +468,28 @@ async function newValue(event){
   }
  
   }
+  
+const[selectall ,setselectall] = useState(false);
+  function selectAllNotes(event){
 
+    const selectvalue = event.currentTarget.checked;
+
+
+    setselectall(selectvalue);
+
+    changeitems(prev=>
+      prev.map(item=>
+        item.isdeleted === true ? {...item , isselected:selectvalue}:item 
+      )
+    );
+
+  }
+
+  const[toolbar, settoolbar] = useState(false);
+
+  function OpenTools(){
+    settoolbar(prev=>!prev);
+  }
 
 
   
@@ -474,17 +507,19 @@ async function newValue(event){
         <div ></div>
       
       <div className="main-content-side">
-      {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} /> :
+      {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} opentoolbar={OpenTools} tool={toolbar}/> :
        <Deleteiptions
        recycleNotes = {recycle}
        delNotes={permanentDelete}
+       selectAll={selectAllNotes}
+       selectreset={selectall}
        /> }
   
       <Masonry
       breakpointCols={{ default: 5, 1100: 3, 700: 2, 500: 1 }}
       className="main-container">
         {
-          items.filter((item)=> DeletedNotes ? item.isdeleted == true && item.terminated !== true  : item.isdeleted !==true).map((x,index)=>{
+          items.filter((item)=> DeletedNotes ? item.isdeleted == true && item.terminated !== true  : item.isdeleted !==true && item.terminated !==true).map((x,index)=>{
             return <Note key={x.id} 
                       id={x.id} 
                       title={x.title}
@@ -501,6 +536,7 @@ async function newValue(event){
                       selectNote={Selectbox}
                       show={DeletedNotes}
                       selectState={x.isselected}
+                      open={pageclickstate}
                     />
           })
         }

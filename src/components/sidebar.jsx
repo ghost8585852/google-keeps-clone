@@ -1,10 +1,9 @@
-import React,{useState} from "react";
+import {useState} from "react";
 import "./styles/sidebar.css";
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
-import { orange } from "@mui/material/colors";
  function Sidebar(props){
 
     const [clickStyle, setClickStyle] = useState(true);

@@ -6,7 +6,7 @@
 .notes-container{
     /* background-color: rgb(255, 255, 255); */
     min-width: 16vw;
-    width: 230px;
+    width: 220px;
     display: inline-block;
     
     border-radius: 5px;
@@ -41,9 +41,34 @@
 }
 .bottom{
    
-    max-height: 450px;
+    max-height: 460px;
     overflow: hidden;
     line-height: 26px;
+}
+
+/* Target the scrollbar area */
+.bottom::-webkit-scrollbar {
+  height: 100%; /* Height of horizontal scrollbar */
+  width: 8px;
+
+}
+
+/* Style the background track */
+.bottom::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  
+}
+
+/* Style the draggable thumb bar */
+.bottom::-webkit-scrollbar-thumb {
+  background: #585757;
+  border-radius: 10px;
+}
+
+/* Hover effect on the draggable bar */
+.bottom::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 .Delete-button{
     height: 40px;
@@ -122,7 +147,7 @@ transition: 0.6s ease;
     /* background-color: rgb(133, 69, 69); */
     /* border-bottom: 2px solid rgb(116, 115, 115); */
     padding: 0px 20px 4px 20px;
-    height: fit-content;
+    height: 90%;
     z-index:0;
 
 }

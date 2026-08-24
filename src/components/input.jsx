@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import {useState,useEffect} from "react";
 import "./styles/input.css"
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,10 +9,7 @@ import {useEditor,EditorContent} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "@tiptap/markdown";
 import Placeholder from "@tiptap/extension-placeholder";
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import { Toolbar } from "./toolbar";
 
 function InputDiv(props){
 
@@ -129,65 +126,10 @@ const editor = useEditor({
 
             <EditorContent  className="add-input content-div" editor={editor}/>
 
-            <div className="editor-toolbar" style={props.tool === true ? {display:""}:{display:"none"}}>
-
-    <button
-        className="editor-buttons"
-        type="button"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-    >
-        <FormatBoldIcon/>
-    </button>
-
-    <button
-        className="editor-buttons"
-        type="button"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-    >
-        <FormatItalicIcon/>
-    </button>
-
-    <button
-        className="editor-buttons"
-        type="button"
-        onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-        }
-    >
-        H1
-    </button>
-
-    <button
-        className="editor-buttons"
-        type="button"
-        onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-        }
-    >
-        H2
-    </button>
-
-    <button
-        className="editor-buttons"
-        type="button"
-        onClick={() =>
-            editor.chain().focus().toggleBulletList().run()
-        }
-    >
-        <FormatListBulletedIcon/>
-    </button>
-
-    <button
-        className="editor-buttons"
-        type="button"
-        onClick={() =>
-            editor.chain().focus().toggleOrderedList().run()
-        }
-    >
-        <FormatListNumberedIcon/>
-    </button>
-
-</div>
+            <Toolbar 
+            className="editor-toolbar"
+            editor={editor}
+            style={props.tool === true ? {display:""}:{display:"none"}} />
 
             <div className="input-screen-buttons ">
                 <button className="All-input-buttons-style input-a" id={props.id} onClick={(e)=>{e.stopPropagation(); props.colorbarOpener(props.id,e)}}><ColorLensIcon className="buttons-image-size-input-container"/></button>

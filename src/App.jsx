@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from "react";
+import {useState,useEffect,useRef} from "react";
 import "./App.css";
 import Nav from "./components/Nav.jsx";
 import Note from "./components/note.jsx";
@@ -44,13 +44,11 @@ useEffect(() => {
 
     changeitems(notes.map(item=>({...item,isselected:false})));
     // setDeletedItems(notes.filter((item)=>item.isdeleted === true));
-    console.log(items);
+    // console.log(items);
     }catch(error){
       console.error("could not get notes:",error);
     }
   } 
-
-
 
   const syncing = useRef(false);
 
@@ -64,12 +62,15 @@ useEffect(() => {
   syncing.current= true;
    console.log("sync started");
 
+   try{
+
+  
+
     const unsyncednotes = items.filter((item)=>item.synced === false).reverse();
-   
+    const idcheck = await axios.get("http://localhost:3000/api/notes");
 
     for(const note of unsyncednotes){
       try{
-        const idcheck = await axios.get("http://localhost:3000/api/notes");
         
         const findid = idcheck.data.find((item)=>item.id === note.id);
 
@@ -125,9 +126,19 @@ useEffect(() => {
         console.log("still offline, could not sync:" ,note.title);
 
       }
-    }
+      
 
-    syncing.current = false;
+
+
+
+
+    } 
+  }finally{
+        syncing.current = false;
+        console.log("sync completed");
+      }
+
+    
   }
 
 
@@ -242,14 +253,14 @@ async function DeleteItem(id) {
   const [pageclickstate,changepageclickState]=useState(null);
 
   function pagestyleapplyer(event){
-   console.log(event.target.id);
+  //  console.log(event.target.id);
    const selectediv = Number(event.target.id);
    changepageclickState(selectediv);
    
 
   }
   function Closepreview(){
-    console.log("clicked");
+    // console.log("clicked");
     changepageclickState(null);
   }
 
@@ -267,7 +278,7 @@ async function DeleteItem(id) {
       return ! previous;
     })
     changecurrentNoteId(event.currentTarget.id);
-    console.log(currentNoteId);
+    // console.log(currentNoteId);
 
   //  console.log(palletposition);
 
@@ -362,10 +373,10 @@ async function newValue(event){
     }
 
 
-    console.log(palletimagevalue);
+    // console.log(palletimagevalue);
 
   };
-  console.log(items);
+  // console.log(items);
 
   const [updateboxstate ,changeUpdateboxstate]=useState(false);
   const [boxid, changeboxid]=useState(null);
@@ -403,8 +414,8 @@ async function newValue(event){
     const checked = event.currentTarget.checked;
     const selectboxId = Number(event.currentTarget.id);
 
-    console.log(selectboxId)
-    console.log(checked);
+    // console.log(selectboxId)
+    // console.log(checked);
 
     changeitems(prev=>
       prev.map(item=>
@@ -461,6 +472,11 @@ async function newValue(event){
         }
       }
       );
+      changeitems(prev=>
+        prev.filter(item=>
+          item.terminated !== true 
+        )
+      );
     }
     console.log("Note, deleted permanently");
   } catch(error){
@@ -491,13 +507,18 @@ const[selectall ,setselectall] = useState(false);
     settoolbar(prev=>!prev);
   }
 
+  async function SyncButton(){
+    syncing.current=false;
+    await syncData();
+  }
 
   
 
 
   return(
     <>
-    <Nav />
+    <Nav 
+    RunSync={SyncButton} />
     <div className="center-grid-layout">
       
         <Sidebar 
@@ -537,6 +558,7 @@ const[selectall ,setselectall] = useState(false);
                       show={DeletedNotes}
                       selectState={x.isselected}
                       open={pageclickstate}
+                      activeNote={pageclickstate}
                     />
           })
         }

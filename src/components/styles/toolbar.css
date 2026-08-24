@@ -1,0 +1,13 @@
+
+.editor-buttons{
+    margin-right: 10px;
+    height: 40px;
+    width: 40px;
+    overflow: hidden;
+    border: none;
+    background-color: transparent;
+    border-radius: 10px;
+}
+.editor-buttons:hover{
+    background-color: rgb(230, 188, 6);
+}

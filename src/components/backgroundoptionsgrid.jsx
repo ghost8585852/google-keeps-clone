@@ -1,16 +1,27 @@
-import React from "react";
 import "./styles/Background.css";
 import InvertColorsOffOutlinedIcon from '@mui/icons-material/InvertColorsOffOutlined';
 import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
-import bimage1 from "../assets/images/bimage-1.png";
-import bimage2 from "../assets/images/bimage-2.png";
-import bimage3 from "../assets/images/bimage-3.png";
-import bimage4 from "../assets/images/bimage-4.png";
-import bimage5 from "../assets/images/bimage-5.png";
-import bimage6 from "../assets/images/bimage-6.png";
-import bimage7 from "../assets/images/bimage-7.png";
-import bimage8 from "../assets/images/bimage-8.png";
-import bimage9 from "../assets/images/bimage-9.png";
+import bimage1 from "../assets/images/bimage-1.webp";
+import bimage2 from "../assets/images/bimage-2.webp";
+import bimage3 from "../assets/images/bimage-3.webp";
+import bimage4 from "../assets/images/bimage-4.webp";
+import bimage5 from "../assets/images/bimage-5.webp";
+import bimage6 from "../assets/images/bimage-6.webp";
+import bimage7 from "../assets/images/bimage-7.webp";
+import bimage8 from "../assets/images/bimage-8.webp";
+import bimage9 from "../assets/images/bimage-9.webp";
+
+const backgroundimages={
+     "bimage-1": bimage1,
+     "bimage-2": bimage2,
+     "bimage-3": bimage3,
+     "bimage-4": bimage4,
+     "bimage-5": bimage5,
+     "bimage-6": bimage6,
+     "bimage-7": bimage7,
+     "bimage-8": bimage8,
+     "bimage-9": bimage9,
+}
  
 function Backgroundoptions( props){
     return(
@@ -51,4 +62,5 @@ function Backgroundoptions( props){
 
     )
 }
-export default Backgroundoptions;
+export default Backgroundoptions ;
+export { backgroundimages };

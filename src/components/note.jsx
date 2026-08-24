@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState} from "react";
 import "./styles/note.css";
 import "./styles/Background.css";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,8 +7,8 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import EditIcon from '@mui/icons-material/Edit';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import Markdown from "react-markdown";
-import SaveIcon from '@mui/icons-material/Save';
 import {motion ,AnimatePresence} from "framer-motion";
+import { backgroundimages } from "./backgroundoptionsgrid";
 
 
 
@@ -37,21 +37,22 @@ function Note(props){ //note  function
                 layout
                 // whileHover={{scale:1.02, duration:0.3}}
                 transition={{
-                    layout:{duration:0.5,type:"tween",stiffness:10,damping:2}
+                    layout:{duration: 0.35,
+                          ease: "easeOut"}
                 }}
                 onMouseEnter={()=>changeVisibility(true)}
                 onMouseLeave={()=>changeVisibility(false)}
                 id={props.id} onClick={props.divstyle}
                 style={{backgroundColor: props.notebackcolor==="" ? "": props.notebackcolor , border:props.selectState === true ?`2px solid red`:`2px solid rgb(157, 160, 161)` }}>
                     
-                   {props.selectedimage===null ? "" :<img  className="note-image" src={ "/src/assets/images/"+props.selectedimage+".png"} />}
+                   {props.selectedimage===null ? "" :<img  className="note-image" fetchPriority="high"  src={backgroundimages[props.selectedimage]} />}
                     <div className="inside-notes-container" id={props.id}>
                         <div className="top" id={props.id}>
                         <h1 className="Note-heading" id={props.id}>{props.title}</h1> 
                         </div>
-                        <div className="bottom" style={props.oncheckid === props.id ? {overflow:"auto"}:{overflow:""}} id={props.id}>
+                        <div className="bottom" style={props.oncheckid === props.id ? {overflowY:"auto"}:{overflow:""}} id={props.id}>
                             <Markdown>
-                              {props.message} 
+                              { props.activeNote === props.id ?props.message : props.message.slice(1,300)} 
                             </Markdown>
                             
                         </div>
@@ -71,4 +72,4 @@ function Note(props){ //note  function
             </AnimatePresence>
     )
 }
-export default Note;
+export default React.memo(Note);

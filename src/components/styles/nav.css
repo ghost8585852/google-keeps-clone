@@ -2,12 +2,14 @@
 .nav-container{
     font-family: "Archivo Black", sans-serif;
     position: fixed;
+    display: flex;
+    justify-content: space-between;
     z-index: 1000;
     font-weight: 400;
     font-style: normal;
     background-color:rgb(88, 87, 87);
     width: 100%;
-    height: 70px;
+    height: 60px;
     box-shadow: 0px 3px 7px rgb(66, 66, 66) ;
     align-content: center;
     padding:0px ;
@@ -32,4 +34,23 @@
 }
 .logo:hover::after{
     width: 100%;
+}
+.right-side-navcontent-container{
+    margin-right: 50px;
+    display: flex;
+    width: 300px;
+    justify-items: center;
+}
+.SyncButton{
+    width: 70px;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+}
+.SyncButton>svg{
+    transform: scale(1.5);
+    color: white;
+}
+.OP-dotted-indicator{
+    transform: scale(0.6);
 }

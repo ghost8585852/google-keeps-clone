@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./styles/deleteoption.css";
 
 export function Deleteiptions(props){

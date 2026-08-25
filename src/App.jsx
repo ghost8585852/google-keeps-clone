@@ -512,18 +512,28 @@ const[selectall ,setselectall] = useState(false);
     await syncData();
   }
 
+  const[sidebar,setsidebar]=useState(false);
+
+  function OpenSidebar(){
+    setsidebar(prev=>!prev);
+  }
+
   
 
 
   return(
     <>
     <Nav 
-    RunSync={SyncButton} />
+    RunSync={SyncButton}
+    MenuOpen={OpenSidebar} />
     <div className="center-grid-layout">
       
         <Sidebar 
         ShowDeletednotes={Opendeleted} 
         OpenNotes={Notes}
+        issidebaropen={sidebar}
+        // MenuClose={OpenSidebar}
+        // menuclosebuttoncheck={sidebar}
         />
         <div ></div>
       
@@ -537,8 +547,11 @@ const[selectall ,setselectall] = useState(false);
        /> }
   
       <Masonry
-      breakpointCols={{ default: 5, 1100: 3, 700: 2, 500: 1 }}
-      className="main-container">
+      breakpointCols={{ default: 5,1490:4, 1130: 3, 890: 2, 600: 1 }}
+      className="main-container"
+      
+      columnClassName="my-masonry-grid_column">
+        
         {
           items.filter((item)=> DeletedNotes ? item.isdeleted == true && item.terminated !== true  : item.isdeleted !==true && item.terminated !==true).map((x,index)=>{
             return <Note key={x.id} 

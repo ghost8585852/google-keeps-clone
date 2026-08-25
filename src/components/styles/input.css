@@ -164,3 +164,39 @@ height: 40px;
         left:90%;
     }
 }
+@media(max-width:690px){
+    .inputDiv-container{
+        width: 460px;
+    }
+    .firstinput-div-container{
+        width: 460px;
+    }
+}
+@media(max-width:587px){
+    .inputDiv-container{
+        width:460px ;
+        transform: scale(0.8);
+    }
+    .firstinput-div-container{
+        width:460px ;
+        transform: scale(0.8);
+    }
+}
+@media(max-width:520px){
+    .inputDiv-container{
+        width:400px;
+    }
+    .firstinput-div-container{
+        width: 400px;
+    }
+}
+@media(max-width:440px){
+    .inputDiv-container{
+        width: 330px;
+        align-self: flex-start;
+    }
+    .firstinput-div-container{
+        width: 330px;
+        align-self: flex-start;
+    }
+}

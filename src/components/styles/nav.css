@@ -1,6 +1,7 @@
 
 .nav-container{
     font-family: "Archivo Black", sans-serif;
+    overflow: hidden;
     position: fixed;
     display: flex;
     justify-content: space-between;
@@ -14,26 +15,11 @@
     align-content: center;
     padding:0px ;
 }
-.logo{
+
+.app-logo{
+    transform: scale(1.2);
+    margin-left: 100px;
     width: fit-content;
-    margin-left: 10%;
-    position: relative;
-    cursor: pointer;
-    color: white;
-    transition: 0.9s ease;
-}
-.logo::after{
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 4px;
-    background-color: rgb(255, 255, 255);
-    transition: 0.9s ease;
-}
-.logo:hover::after{
-    width: 100%;
 }
 .right-side-navcontent-container{
     margin-right: 50px;
@@ -53,4 +39,27 @@
 }
 .OP-dotted-indicator{
     transform: scale(0.6);
+}
+.menu-icon{
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+    align-self: center;
+    margin-left: 50px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.menu-icon>svg{
+    transform: scale(1.5);
+    color: aliceblue;
+}
+@media(max-width:900px) {
+
+    .logo{
+        transform: scale(0.7);
+    }
+    .menu-icon{
+        margin-left: 30px;
+    }
 }

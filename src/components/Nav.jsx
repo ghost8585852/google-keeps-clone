@@ -4,6 +4,8 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { OrbitProgress } from "react-loading-indicators";
+import MenuIcon from '@mui/icons-material/Menu';
+import logo from "../assets/images/logo.webp";
 
 function Nav(props){
 
@@ -33,10 +35,10 @@ function Nav(props){
     return(
         
             <div className="nav-container">
-            
-            <h1 className="logo"> <ImportContactsIcon   /> MarkDown</h1>
+            <button className="menu-icon" name="menu-button" onClick={(e)=>{e.stopPropagation(); props.MenuOpen()}}><MenuIcon/></button>
+            <img className="app-logo" src={logo}/>
             <div className="right-side-navcontent-container">
-                <button className="SyncButton" onClick={handleSync}>
+                <button name="sync-button" className="SyncButton" onClick={handleSync}>
 
                      {syncState === "idle" && (
                         <ReplayIcon className="icon" />

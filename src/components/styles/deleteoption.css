@@ -44,3 +44,15 @@
   accent-color:#F59272;
   margin-left: 10px;
 }
+@media(max-width:700px){
+    .buttons-container{
+        transform: scale(0.80);
+        margin-right: 20px;
+    }
+    .checkbutton-container{
+        margin-left: 20px;
+        margin-top: 40px;
+        position: unset;
+        transform: scale(0.80);
+    }
+}

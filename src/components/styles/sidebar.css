@@ -3,7 +3,6 @@
     padding-top: 50px;
     height: 700px;
     width:180px;
-    z-index: 500;
     height: 100vh;
     transition: 0.2s ease;
     
@@ -35,6 +34,7 @@
     gap: 20px;
     padding: 0;
 }
+
 .list-contents{
     height: 70px;
     padding-left: 40px;
@@ -49,4 +49,13 @@
 .list-contents:hover{
     background-color: aliceblue;
     transition: 0.6s ease;
+}
+@media(max-width:400px){
+    .side-bar{
+        left:-10px
+    }
+    .list-contents{
+        height: 50px;
+        color: white;
+    }
 }

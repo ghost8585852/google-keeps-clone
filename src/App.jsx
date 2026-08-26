@@ -547,7 +547,7 @@ const[selectall ,setselectall] = useState(false);
        /> }
   
       <Masonry
-      breakpointCols={{ default: 5,1490:4, 1130: 3, 890: 2, 600: 1 }}
+      breakpointCols={{ default: 5,1490:4, 1130: 3, 890: 2, 673: 1 }}
       className="main-container"
       
       columnClassName="my-masonry-grid_column">
@@ -580,8 +580,8 @@ const[selectall ,setselectall] = useState(false);
       {activenote!==false && (
         <div className="pallet-frame"
          style={{
-          top:palletposition.x +30,
-          left:palletposition.y -1,
+          top:palletposition.x +20,
+          left:palletposition.y -39,
           zIndex:999,
          }}>
           <Backgroundoptions id={currentNoteId}  palletvalueCatcher={newValue}  imagevaluecatcher={imagecatcher}/>

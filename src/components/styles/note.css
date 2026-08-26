@@ -126,6 +126,46 @@
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 
 }
+@media(max-width:1491px){
+    .notes-container{
+        min-width: 90%;
+    }
+}
+
+
+
+
+@media(max-width:1300px){
+    .active-note{
+        left: 35%;
+    }
+}
+@media(max-width:1100px){
+    .active-note{
+        left: 30%;
+    }
+}
+@media(max-width:800px){
+    .active-note{
+        left:15%;
+       
+    }
+ 
+
+}
+@media(max-width:600px){
+    .active-note{
+        left:0;
+        font-size: 13px;
+        height: 470px;
+        width: 90%;
+        z-index: 500;
+    }
+   .active-note>.inside-notes-container>.bottom{
+    max-height: 340px;
+   };
+
+}
 .closepreviewpage{
     
     bottom:5px;

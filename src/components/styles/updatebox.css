@@ -11,8 +11,13 @@
     border: 2px solid rgb(218, 211, 78);
     display: flex;
     flex-direction: column;
-    z-index: 1000;
+    z-index:1000;
 
+}
+@media(max-width:400px){
+    .updatebox-container{
+        z-index: 600;
+    }
 }
 .update-title{
     height: 70px;
@@ -50,4 +55,22 @@
     display: flex;
     width: 100%;
     background-color: rgba(229, 206, 38, 0.84);
+}
+@media(max-width:400px){
+    .updatebox-container{
+        top: 310px;
+        height: 470px;
+        width: 80%;
+        left: 46.3%;
+    }
+    .update-text-area{
+        max-height: 270px;
+        min-height: 270px;
+        font-size: 14px;
+        padding-bottom: 2px;
+        margin-bottom:10px;
+    }
+    .update-title{
+        font-size: 24px;
+    }
 }

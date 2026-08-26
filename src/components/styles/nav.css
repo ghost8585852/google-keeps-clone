@@ -4,14 +4,14 @@
     overflow: hidden;
     position: fixed;
     display: flex;
-    justify-content: space-between;
+   
     z-index: 1000;
     font-weight: 400;
     font-style: normal;
-    background-color:rgb(88, 87, 87);
+    background-color:rgb(59, 59, 59);
     width: 100%;
     height: 60px;
-    box-shadow: 0px 3px 7px rgb(66, 66, 66) ;
+    box-shadow: 0px 3px 7px rgb(39, 38, 38) ;
     align-content: center;
     padding:0px ;
 }
@@ -19,11 +19,13 @@
 .app-logo{
     transform: scale(1.2);
     margin-left: 100px;
-    width: fit-content;
+    width: 50px;
+    object-fit: cover;
 }
 .right-side-navcontent-container{
-    margin-right: 50px;
+   
     display: flex;
+    margin-left: auto;
     width: 300px;
     justify-items: center;
 }
@@ -61,5 +63,22 @@
     }
     .menu-icon{
         margin-left: 30px;
+    }
+    .nav-container{
+        height: 50px;
+    }
+    .menu-icon>svg{
+        height: 19px;
+        
+    }
+    .right-side-navcontent-container{
+        margin-right: 10px;
+        width: 100px;
+    }
+    .SyncButton>svg{
+        height: 18px;
+    }
+    .dot-shape-holder{
+        height: 38px;
     }
 }

@@ -19,7 +19,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
         setClickStyle(false);
     }
     return(
-        <div className="side-bar" style={props.issidebaropen ? {transform:`translateX(0)`,backgroundColor:"rgb(65, 64, 64)"}:{transform:`translate(-106px)`}}>
+        <div className="side-bar" style={props.issidebaropen ? {transform:`translateX(0)`,backgroundColor:"rgb(59, 59, 59)",zIndex:700}:{transform:`translate(-106px)`,zIndex:500}}>
             {/* <button className="Menu-close-icon" style={{display:props.menuclosebuttoncheck ? "":"none"}} onClick={(e)=>{e.stopPropagation(); props.MenuClose()}}><HighlightOffIcon/></button> */}
             <ul className="side-bar-listelements">
                 <li className="list-contents" style={clickStyle === true ? {backgroundColor:"#F59272",borderRadius:"0px 30px 30px 0px"}: {}} onClick={(e)=>{e.stopPropagation(),props.OpenNotes(), MainNotesStyle()}} >Notes <LightbulbIcon /></li>

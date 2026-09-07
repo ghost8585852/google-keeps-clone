@@ -16,6 +16,7 @@
     height: fit-content;
     margin-bottom: 10px;
     z-index: 1;
+    /* color:white; */
     /* overflow: hidden; */
     /* background-image: url("https://www.shutterstock.com/shutterstock/videos/3412797893/thumb/1.jpg?ip=x480"); */
     
@@ -29,7 +30,6 @@
     transition: 0.4s ease;
 }
 .Note-heading{
-    color: rgb(44, 43, 43);
     /* background-color: red; */
     overflow: hidden;
 }
@@ -115,7 +115,7 @@
   position: fixed; 
   top:10%;
   left: 37%;
-  
+  /* color: white; */
   z-index: 2;
   width: 500px;
   height: 600px;
@@ -125,6 +125,21 @@
   transition: 0.4s ease;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 
+}
+/* .Note-dark-overlay{
+    background-color: rgba(0, 0, 0, 0.342);
+    position: absolute;
+    width: 100%;
+    z-index: 0;
+    height: 100%;
+
+} */
+.active-note-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+
+    background-color: rgba(0, 0, 0, 0.56);
 }
 @media(max-width:1491px){
     .notes-container{

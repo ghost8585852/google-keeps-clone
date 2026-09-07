@@ -29,10 +29,10 @@ function Note(props){ //note  function
 
 
    
-    
    
     return(
              <AnimatePresence>
+                <div className={props.oncheckid !=props.id ? "unactive-overlay": "active-note-overlay"} style={{display: props.oncheckid != props.id ? "none" : ""}} onClick={(e)=>{e.stopPropagation(); props.divclose()}}></div> 
                 <motion.div className={props.oncheckid !== props.id ? "notes-container" :"active-note"} 
                 layout
                 // whileHover={{scale:1.02, duration:0.3}}
@@ -44,7 +44,7 @@ function Note(props){ //note  function
                 onMouseLeave={()=>changeVisibility(false)}
                 id={props.id} onClick={props.divstyle}
                 style={{backgroundColor: props.notebackcolor==="" ? "": props.notebackcolor , border:props.selectState === true ?`2px solid red`:`2px solid rgb(157, 160, 161)` }}>
-                    
+                    <div className="Note-dark-overlay"></div>
                    {props.selectedimage===null ? "" :<img  className="note-image" fetchPriority="high"  src={backgroundimages[props.selectedimage]} />}
                     <div className="inside-notes-container" id={props.id}>
                         <div className="top" id={props.id}>

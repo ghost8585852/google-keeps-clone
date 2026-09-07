@@ -45,7 +45,10 @@ function Updatebox({id, title,content,onUpdate}){
  
 
     return(
+      <div>
+        <div className="editor-overlay"></div>
         <div className="updatebox-container">
+            
             <input 
             className="update-title"
             type="text"
@@ -70,7 +73,7 @@ function Updatebox({id, title,content,onUpdate}){
       <button className="update-button" onClick={handleSave}>Save</button>
 
         </div>
-
+</div>
     )
 
 }

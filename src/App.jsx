@@ -270,9 +270,21 @@ async function DeleteItem(id) {
   
   function palletpositionCheck( id , event){
     // console.log(event.currentTarget.id);
-    const react = event.currentTarget.getBoundingClientRect();
+    const rect = event.currentTarget.getBoundingClientRect();
+    const viewportPadding = 12;
+    const paletteWidth = Math.min(420, window.innerWidth - viewportPadding * 2);
+    const paletteHeight = 180;
+    const opensBelow = rect.bottom + paletteHeight - 50 + viewportPadding <= window.innerHeight;
 
-    changepalletposition({ x :react.top + window.scrollY , y :react.left});
+    changepalletposition({
+      x: opensBelow
+        ? rect.bottom + window.scrollY + 8
+        : Math.max(viewportPadding, rect.top + window.scrollY - 90 - 1),
+      y: Math.max(
+        viewportPadding,
+        Math.min(rect.left -2, window.innerWidth - paletteWidth - viewportPadding)
+      )
+    });
 
     changeactive((previous)=>{
       return ! previous;
@@ -586,8 +598,8 @@ const[selectall ,setselectall] = useState(false);
       {activenote!==false && (
         <div className="pallet-frame"
          style={{
-          top:palletposition.x +20,
-          left:palletposition.y -39,
+          top:palletposition.x,
+          left:palletposition.y,
           zIndex:999,
          }}>
           <Backgroundoptions id={currentNoteId}  palletvalueCatcher={newValue}  imagevaluecatcher={imagecatcher}/>

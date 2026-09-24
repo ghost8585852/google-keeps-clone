@@ -518,7 +518,11 @@ const[selectall ,setselectall] = useState(false);
     setsidebar(prev=>!prev);
   }
 
-  
+  const visibleNotes = items.filter((item) =>
+    DeletedNotes
+      ? item.isdeleted === true && item.terminated !== true
+      : item.isdeleted !== true && item.terminated !== true
+  );
 
 
   return(
@@ -552,8 +556,10 @@ const[selectall ,setselectall] = useState(false);
       
       columnClassName="my-masonry-grid_column">
         
-        {
-          items.filter((item)=> DeletedNotes ? item.isdeleted == true && item.terminated !== true  : item.isdeleted !==true && item.terminated !==true).map((x,index)=>{
+        {visibleNotes.length === 0 ? (
+          <p className="no-notes">Empty</p>
+        ) : (
+          visibleNotes.map((x)=>{
             return <Note key={x.id} 
                       id={x.id} 
                       title={x.title}
@@ -574,7 +580,7 @@ const[selectall ,setselectall] = useState(false);
                       activeNote={pageclickstate}
                     />
           })
-        }
+        )}
                         
       </Masonry>
       {activenote!==false && (

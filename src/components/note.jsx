@@ -52,7 +52,7 @@ function Note(props){ //note  function
                         </div>
                         <div className="bottom" style={props.oncheckid === props.id ? {overflowY:"auto"}:{overflow:""}} id={props.id}>
                             <Markdown>
-                              { props.activeNote === props.id ?props.message : props.message.slice(1,300)} 
+                              { props.activeNote === props.id ?props.message : props.message.slice(0,300)} 
                             </Markdown>
                             
                         </div>

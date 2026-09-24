@@ -122,7 +122,7 @@ const editor = useEditor({
         <div className="inputDiv-container" style={{display: clicktracker ? " " :"none",backgroundColor:inputhead.backgroundColor===" " ? "" : inputhead.backgroundColor}}>
             <h1 className="inputheading">Add note</h1>
             <input name="title" value={inputhead.title} className="add-input title-div" onChange={inputcheck} placeholder="Title"></input>
-            {/* <textarea name="content"  value={inputhead.content} className="add-input content-div" onChange={inputcheck} placeholder="Content ..."></textarea> */}
+        
 
             <EditorContent  className="add-input content-div" editor={editor}/>
 

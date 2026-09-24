@@ -56,6 +56,24 @@ body{
   margin-top: 70px;
 
 }
+.main-container:has(.no-notes){
+  min-height: 300px;
+  align-items: center;
+  justify-content: center;
+}
+.main-container:has(.no-notes) .my-masonry-grid_column{
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+.no-notes{
+  color: rgba(241, 237, 237, 0.441);
+  font-size: clamp(3.2rem, 13vw, 3rem);
+  display: flex;
+  align-self: center;
+  font-weight: bold;
+  text-align: center;
+}
 .pallet-frame{
   width: fit-content;
   height: fit-content;
@@ -105,5 +123,4 @@ body{
      grid-template-columns: 50px 1fr;
   }
  }
-
 

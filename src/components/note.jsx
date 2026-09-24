@@ -32,13 +32,25 @@ function Note(props){ //note  function
    
     return(
              <AnimatePresence>
-                <div className={props.oncheckid !=props.id ? "unactive-overlay": "active-note-overlay"} style={{display: props.oncheckid != props.id ? "none" : ""}} onClick={(e)=>{e.stopPropagation(); props.divclose()}}></div> 
+                {props.oncheckid === props.id && (
+                    <motion.div
+                        className="active-note-overlay"
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
+                        transition={{duration: 0.2, ease: "easeOut"}}
+                        onClick={(e)=>{e.stopPropagation(); props.divclose()}}
+                    />
+                )}
                 <motion.div className={props.oncheckid !== props.id ? "notes-container" :"active-note"} 
                 layout
                 // whileHover={{scale:1.02, duration:0.3}}
                 transition={{
-                    layout:{duration: 0.35,
-                          ease: "easeOut"}
+                    layout:{
+                        type: "tween",
+                        duration: 0.55,
+                        ease: [0.2, 0, 0, 1]
+                    }
                 }}
                 onMouseEnter={()=>changeVisibility(true)}
                 onMouseLeave={()=>changeVisibility(false)}

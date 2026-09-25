@@ -551,7 +551,7 @@ const[selectall ,setselectall] = useState(false);
         // MenuClose={OpenSidebar}
         // menuclosebuttoncheck={sidebar}
         />
-        <div ></div>
+        <div className="empty-div"></div>
       
       <div className="main-content-side">
       {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} opentoolbar={OpenTools} tool={toolbar}/> :

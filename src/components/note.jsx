@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useRef} from "react";
 import "./styles/note.css";
 import "./styles/Background.css";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,23 +12,20 @@ import { backgroundimages } from "./backgroundoptionsgrid";
 
 
 
-function Note(props){ //note  function 
+function Note(props){ 
     const [visibilitycheck, changeVisibility] =useState(false);
-
-        // changeVisibility(true);
-        // console.log(visibilitycheck);
-
-    // const [colorbarnotestate,changecolorbarstate]= useState(null);
-
-    // function colorbarCheck(id){
-    //     console.log(id);
-    //     const visibility=id;
-    //     changecolorbarstate(prev => prev===visibility ? null :visibility);
-    
-    // }
+    const noteRef = useRef(null);
+    const [outerDivHeight, setOuterDivHeight] = useState(null);
 
 
-   
+   function heightcheck(){
+    const height = noteRef.current?.offsetHeight;
+
+    if(height){
+        setOuterDivHeight(height);
+    }
+  
+   }
    
     return(
              <AnimatePresence>
@@ -42,7 +39,8 @@ function Note(props){ //note  function
                         onClick={(e)=>{e.stopPropagation(); props.divclose()}}
                     />
                 )}
-                <motion.div className={props.oncheckid !== props.id ? "notes-container" :"active-note"} 
+                <div style={{height: props.oncheckid === props.id && outerDivHeight ? `${outerDivHeight}px` : undefined , marginBottom: props.oncheckid === props.id ?  "10px": undefined}}>
+                <motion.div ref={noteRef} className={props.oncheckid !== props.id ? "notes-container" :"active-note"} 
                 layout
                 // whileHover={{scale:1.02, duration:0.3}}
                 transition={{
@@ -54,7 +52,7 @@ function Note(props){ //note  function
                 }}
                 onMouseEnter={()=>changeVisibility(true)}
                 onMouseLeave={()=>changeVisibility(false)}
-                id={props.id} onClick={props.divstyle}
+                id={props.id} onClick={(event) => {  if (props.oncheckid !== props.id) {heightcheck();}; props.divstyle(event);}}
                 style={{backgroundColor: props.notebackcolor==="" ? "": props.notebackcolor , border:props.selectState === true ?`2px solid red`:`2px solid rgb(157, 160, 161)` }}>
                     <div className="Note-dark-overlay"></div>
                    {props.selectedimage===null ? "" :<img  className="note-image" fetchPriority="high"  src={backgroundimages[props.selectedimage]} />}
@@ -80,7 +78,7 @@ function Note(props){ //note  function
                     <input id={props.id } onChange={props.selectNote} onClick={(e)=>{e.stopPropagation()}} type="checkbox" className="select-div" style={{display: props.show === true ? "" : "none"}} checked={props.selectState || false } />
                     {/* <Backgroundoptions  id={props.id} stateCheck={{display:colorbarnotestate===props.id ? "block" :"none"} } onClick={(e)=>{e.stopPropagation()}} /> */}
 
-                </motion.div>
+                </motion.div></div>
             </AnimatePresence>
     )
 }

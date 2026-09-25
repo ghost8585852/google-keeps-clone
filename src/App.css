@@ -118,6 +118,7 @@ body{
    align-items: center;
   }
 } */
+ 
  @media(max-width:470px){
   .center-grid-layout{
      grid-template-columns: 50px 1fr;

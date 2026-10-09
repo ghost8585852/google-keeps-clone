@@ -1,0 +1,119 @@
+.Register-background{
+    display: grid;
+    min-height: 100vh;
+    position: relative;
+}
+.Register-background > nav{
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.Register-background >nav >a{
+    margin-right: 10%;
+    height: 20px;
+    width: 60px;
+    text-decoration: none;
+    color: rgb(22, 22, 22);
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 6px;
+    background-color: #F59272;
+    border-radius: 20px;
+    text-align: center;
+    padding: 10px 10px; 
+    border: 1px solid rgb(48, 46, 46);
+}
+.Register-background >nav>h1{
+    color: #F59272;
+    font-size: 25px;
+    margin: 10px 0 0 30px;
+}
+.Register-form {
+    display: flex;
+    flex-direction: column;
+    color: rgb(244, 244, 244);
+    font-size: 22px;
+    line-height: 45px;
+}
+.Register-container{
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+}
+.Register-form > input{
+    box-sizing: border-box;
+    width: 420px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    padding: 0 10px;
+    color: rgb(250, 245, 245);
+    font-size: 20px;
+}
+.Register-form > input:focus {
+    border-color: #F59272;
+    outline: none;
+}
+.Register-form >h1{
+    color: #F59272;
+    font-size: 50px;
+    margin: 0 auto 40px;
+}
+.Register-button{
+    margin: 50px auto 0;
+    height: 40px;
+    width: 200px;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    background: none;
+    border:2px solid #F59272;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.Register-button:hover{
+    background-color: #F59272;
+}
+.Register-form-image{
+    height: 500px;
+    margin-right: 40px;
+}
+.register-message{
+    width: fit-content;
+    margin: 0 auto;
+}
+@media (max-width:1050px){
+    .Register-form >input{
+        width: 100%;
+    }
+    .Register-form-image{
+        height: 400px;
+    }
+    .Register-form{
+        font-size: 18px;
+    }
+}
+@media (max-width:800px){
+    .Register-container{
+        display: grid;
+    }
+    .Register-form >h1{
+        font-size: 35px;
+        margin-bottom: 15px;
+    }
+    .Register-form >input{
+        width: 300px;
+    }
+    .Register-form-image{
+        display: none;
+    }
+    .Register-background >nav>h1{
+        margin-left: 12px;
+    }
+}

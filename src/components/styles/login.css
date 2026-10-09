@@ -1,0 +1,123 @@
+.login-page-background{
+    display: grid;
+    height: 100vh;
+    position: relative;
+}
+.login-nav{
+    position: absolute;
+    top: 0%;
+    height: fit-content;
+}
+.login-nav >h1{
+    font-size: 25px;
+    margin-left: 30px;
+    margin-top: 10px;
+    color: #F59272;
+}
+
+.login-form-container{
+    display: flex;
+    width: fit-content;
+    height:fit-content;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+
+
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+    line-height: 45px;
+    color: rgb(244, 244, 244);
+    overflow: contain;
+}
+.login-form >input{
+    color: rgb(250, 245, 245);
+    height: 50px;
+    width: 420px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 20px;
+}
+.login-form > input:focus {
+    border-color: #F59272;
+    outline: none;
+}
+.login-form-image{
+    height: 500px;
+    margin-right: 40px;
+    align-self: center;
+  
+}
+.login-button{
+    margin-top: 50px;
+    height: 20px;
+    width:200px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login-form > p > a{
+    color: #F59272;
+}
+.login-form >p{
+    margin-top: 20px;
+    text-align: center;
+}
+.login-form >h1{
+    color: #F59272;
+    margin-bottom: 25px;
+    margin :0 auto;
+    font-size: 50px;
+    margin-bottom: 40px;
+}
+.login-button{
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background: none;
+    color: white;
+    border: 2px solid #F59272;
+}
+.login-message{
+    width: fit-content;
+    margin: 0 auto;
+}
+@media (max-width:1050px){
+    .login-form >input{
+        width: 100%;
+    }
+    .login-form-image{
+        height: 400px;
+    }
+    .login-form{
+        font-size: 18px;
+    }
+}
+@media (max-width:800px){
+    .login-form-container{
+        display: grid;
+        
+    }
+    .login-form >h1{
+        font-size: 35px;
+        margin-bottom: 15px;
+    }
+    .login-form >input{
+        width: 300px;
+    }
+    .login-form-image{
+        margin: unset;
+        height: 160px;
+        justify-self: center;
+    }
+    .login-nav >h1{
+        margin-left: 12px;
+    }
+}

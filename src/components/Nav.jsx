@@ -1,11 +1,12 @@
 import "./styles/nav.css";
 import { useState } from "react";
-import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { OrbitProgress } from "react-loading-indicators";
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from "../assets/images/logo.webp";
+import PersonIcon from '@mui/icons-material/Person';
 
 function Nav(props){
 
@@ -55,6 +56,8 @@ function Nav(props){
                     
                 
                 </button>
+                {/* <button className="Logout-btn" name="logout button" aria-label="logout button" onClick={(e)=>{e.stopPropagation(); props.handleLogout()}}><LogoutIcon/></button> */}
+                <div ref={props.userIconRef} className="user-icon"  onClick={(e)=>{e.stopPropagation(); props.OpenPanel()}}> <PersonIcon /></div>
             </div>
             </div>
     )

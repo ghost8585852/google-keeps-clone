@@ -5,17 +5,33 @@
     position: fixed;
     display: flex;
    
-    z-index: 1000;
+    z-index: 500;
     font-weight: 400;
     font-style: normal;
-    background-color:rgb(59, 59, 59);
+    background-color:rgb(44, 44, 44);
     width: 100%;
     height: 60px;
-    box-shadow: 0px 3px 7px rgb(39, 38, 38) ;
+    box-shadow: 0px 2px 4px rgb(39, 38, 38) ;
     align-content: center;
     padding:0px ;
 }
+.user-icon{
+    height:45px;
+    display: grid;
+    width: 45px;
+    margin:auto 0;
+    background-color: rgb(73, 73, 73);
+    border-radius: 50%;
+    border: 3.5px solid #9b4a2f;
+    cursor: pointer;
+}
 
+.user-icon >svg{
+    scale: 1.4;
+    color: white;
+    align-self: center;
+    justify-self: center;
+}
 .app-logo{
     transform: scale(1.2);
     margin-left: 100px;
@@ -26,7 +42,8 @@
    
     display: flex;
     margin-left: auto;
-    width: 300px;
+    gap:40px;
+    width: 200px;
     justify-items: center;
 }
 .SyncButton{
@@ -49,6 +66,7 @@
     align-self: center;
     margin-left: 50px;
     border: none;
+    z-index: 500;
     background-color: transparent;
     cursor: pointer;
 }
@@ -56,6 +74,13 @@
     transform: scale(1.5);
     color: aliceblue;
 }
+
+
+
+
+
+
+
 @media(max-width:900px) {
 
     .logo{
@@ -73,7 +98,16 @@
     }
     .right-side-navcontent-container{
         margin-right: 10px;
-        width: 100px;
+        gap:10px;
+        width: 140px;
+    }
+    .user-icon{
+        height: 38px;
+        width: 38px;
+    }
+
+    .user-icon>svg{
+        scale: 1.2;
     }
     .SyncButton>svg{
         height: 18px;

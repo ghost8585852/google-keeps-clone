@@ -28,6 +28,21 @@ function Backgroundoptions( props){
         <div className="pallet-container" id={props.id} onClick={(e)=>{e.stopPropagation()}} >
             <div className="color-container" id={props.id}>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} value="white"><InvertColorsOffOutlinedIcon /></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#496635"}} value="#4a5d3d"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#573667"}} value="#573667"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#692b17"}} value="#692b17"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#365776"}} value="#365776"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#264d3b"}} value="#264d3b"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#5a4f7b"}} value="#5a4f7b"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#67522f"}} value="#67522f"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#4a2a64"}} value="#4a2a64"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#881a3b"}} value="#881a3b"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#030303"}} value="#030303"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#284255"}} value="#284255"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"rgb(60, 128, 121)"}} value="rgb(60, 128, 121)"></button>
+
+
+                {/* <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} value="white"><InvertColorsOffOutlinedIcon /></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#FAAFA8"}} value="#FAAFA8"></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#E2F6D3"}} value="#E2F6D3"></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#F59272"}} value="#F59272"></button>
@@ -39,7 +54,7 @@ function Backgroundoptions( props){
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#F6E2DD"}} value="#F6E2DD"></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#E9E3D4"}} value="#E9E3D4"></button>
                 <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#EFEFF1"}} value="#EFEFF1"></button>
-                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#DDEAED"}} value="#DDEAED"></button>
+                <button className="color-buttons"  id={props.id} onClick={props.palletvalueCatcher} style={{backgroundColor:"#DDEAED"}} value="#DDEAED"></button> */}
 
             </div>
             <hr />

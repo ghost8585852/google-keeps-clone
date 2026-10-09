@@ -1,0 +1,49 @@
+.user-panel-container{
+    position: fixed;
+    height: 450px;
+    border-radius: 20px;
+    width: 350px;
+    background-color: rgb(48, 47, 47);
+    border: 1px solid rgb(158, 75, 30);
+    z-index: 100;
+    overflow: hidden;
+    display: grid;
+    top: 80px;
+    right:2% ;
+}
+.user-panel-firstsection{
+    height: 45%;
+    width: 95%;
+    justify-self: center;
+    color: aliceblue;
+    border-radius: 20px;
+    margin-top: 25px;
+    overflow: hidden;
+}
+.user-panel-firstsection>p{
+    height: 32.3%;
+    padding-left: 30px;
+    background-color: rgb(20, 19, 19);
+    margin-top: 3px;
+    align-content: center;
+}
+.Logout-btn{
+    height: 32.3%;
+    margin-top: 3px;
+    width: 100%;
+    font-size: 20px;
+    display: flex;
+    padding-left: 30px;
+    align-items: center;
+    gap: 10px;
+    color: aliceblue;
+    background-color: rgb(20, 19, 19);
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+    
+}
+.Logout-btn:hover{
+    background-color: rgb(32, 32, 32);
+    transition: 0.3s;
+}

@@ -19,6 +19,8 @@ function InputDiv(props){
         image:null,
         backgroundColor:"",
         isdeleted:false,
+        ispinned:false,
+        isachieved:false,
         isselected:false
     });
 
@@ -64,6 +66,8 @@ function InputDiv(props){
                     image:null,
                     backgroundColor:"",
                     isdeleted:false,
+                    ispinned:false,
+                    isachieved:false,
                     isselected:false
                  });
 
@@ -71,7 +75,7 @@ function InputDiv(props){
 
                  }
     }
-    const [clicktracker,newvalue]=useState(false);
+    const [clicktracker,newvalue]=useState();
 
     function divclicktracker(){
         
@@ -139,8 +143,8 @@ const editor = useEditor({
             </div>
             {/* <Backgroundoptions stateCheck={{display: palletState===true ? "" :"none"}} /> */}
             <button className="add-button" 
-            onClick={add}><AddIcon /></button>
-            <CloseIcon  className="close-button" onClick={noteclose} />
+            onClick={(e)=>{e.stopPropagation(); add()}}><AddIcon /></button>
+            <CloseIcon  className="close-button" onClick={(e)=>{e.stopPropagation(); noteclose(); props.closeTools()}} />
 
         </div>
         <div className="firstinput-div-container" style={{display: clicktracker ? "none" : ""}}>

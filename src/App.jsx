@@ -8,43 +8,80 @@ import Sidebar from "./components/sidebar.jsx";
 import Masonry from "react-masonry-css";
 import Updatebox from "./components/updatebox.jsx";
 import Backgroundoptions from "./components/backgroundoptionsgrid.jsx";
+import { Decision } from "./components/checker.jsx";
+import { Userpanel } from "./components/userinfo.jsx";
+
 import axios from "axios";
 import { Deleteiptions } from "./components/Deleteoptions.jsx";
+import { useNavigate } from "react-router";
+
+import { API_URL } from "./fileurl/Url.js";
 
 
-function App(){
-  const [items,changeitems] =useState(()=>{
-   const saved = localStorage.getItem("items");
-    return saved ? JSON.parse(saved) : [];
-  }); // using this to create array of objects.
-  
 
-
+ function App(){
+  const [items,changeitems] =useState([]);
+  const [userId , setuserId] = useState(null);
+  const [cacheReady , setCacheReady] = useState(false);
+  const navigate = useNavigate();
 useEffect(() => {
-  localStorage.setItem("items", JSON.stringify(items));
-}, [items]);
 
+  async function getcurrentUser(){
+
+    try{
+      const response = await axios.get(
+      `${API_URL}/api/auth/me`,
+      {withCredentials:true}
+  );
+      setuserId(response.data.userId);
+    } catch(error){
+      console.log("No active login session");
+    }
+    
+  }
+  getcurrentUser();
+
+},[]);
+
+useEffect(()=>{
+  if(!userId) return;
+
+  setCacheReady(false);
+  const saved = localStorage.getItem(`items_user_${userId}`);
+
+  changeitems(saved ? JSON.parse(saved) : []);
+  setCacheReady(true);
+},[userId]);
+
+
+useEffect(()=>{
+  if(!userId || !cacheReady) return;
+
+
+  localStorage.setItem(`items_user_${userId}`, JSON.stringify(items));
+},[items , userId , cacheReady]);
 
 
   async function getNotes(){
      
     try{
-      const response = await axios.get("http://localhost:3000/api/notes");
+      const response = await axios.get(`${API_URL}/api/notes`,{withCredentials:true});
 
       const notes = response.data.map((note)=>({
         id:note.id,
         title: note.title,
         content: note.content,
         backgroundColor: note.backgroundcolor,
+        ispinned:note.ispinned,
         image: note.image,
-        isdeleted:note.isdeleted
+        isdeleted:note.isdeleted,
+        isachieved:note.isachieved
 
       })
     );
 
     changeitems(notes.map(item=>({...item,isselected:false})));
-    // setDeletedItems(notes.filter((item)=>item.isdeleted === true));
-    // console.log(items);
+
     }catch(error){
       console.error("could not get notes:",error);
     }
@@ -67,7 +104,7 @@ useEffect(() => {
   
 
     const unsyncednotes = items.filter((item)=>item.synced === false).reverse();
-    const idcheck = await axios.get("http://localhost:3000/api/notes");
+    const idcheck = await axios.get(`${API_URL}/api/notes`,{withCredentials:true});
 
     for(const note of unsyncednotes){
       try{
@@ -79,36 +116,41 @@ useEffect(() => {
 
         if(note.terminated === true){
           {
-            await axios.delete(`http://localhost:3000/api/notes`,{
+            await axios.delete(`${API_URL}/api/notes`,{
               data:{
                 id:note.id
-              }
+              },
+              withCredentials:true,
             });
           }
           
         }
       else if(findid){
-          await axios.patch(`http://localhost:3000/api/notes/${findid.id}`,{
+          await axios.patch(`${API_URL}/api/notes/${findid.id}`,{
             title:note.title,
             content:note.content,
             backgroundcolor:note.backgroundColor,
             image:note.image,
-            isdeleted:note.isdeleted
+            ispinned:note.ispinned,
+            isdeleted:note.isdeleted,
+            isachieved:note.isachieved
             
-          });
+          },{withCredentials:true});
 
           serverId = findid.id;
         }
         else{
 
-          const response = await axios.post("http://localhost:3000/api/notes",
+          const response = await axios.post(`${API_URL}/api/notes`,
           {
             title:note.title,
             content:note.content,
             backgroundcolor:note.backgroundColor,
             image:note.image,
-            isdeleted:note.isdeleted
-          });
+            ispinned:note.ispinned,
+            isdeleted:note.isdeleted,
+            isachieved:note.isachieved
+          },{withCredentials:true});
 
           serverId = response.data.id;
         }
@@ -143,6 +185,9 @@ useEffect(() => {
 
 
   useEffect(()=>{
+
+    if(!userId || !cacheReady) return;
+
     async function loadData(){
       await syncData();
 
@@ -150,21 +195,7 @@ useEffect(() => {
     }
 
     loadData();
-  },[]);
-
-
-//   const [deletedItems, setDeletedItems] = useState(() => {
-//   const savedDeleted = localStorage.getItem("deletedItems");
-//   return savedDeleted ? JSON.parse(savedDeleted) : [];
-// });
-
-
-
-// useEffect(() => {
-//   localStorage.setItem("deletedItems", JSON.stringify(deletedItems));
-// }, [deletedItems]);
-
-
+  },[userId,cacheReady]);
 
 
  
@@ -186,13 +217,15 @@ async function addItem(inputhead) {
   settoolbar(false);
   // 2. Send the same note to your Express backend
   try {
-    const response = await axios.post("http://localhost:3000/api/notes", {
+    const response = await axios.post(`${API_URL}/api/notes`, {
       title:inputhead.title,
       content:inputhead.content,
       backgroundcolor:inputhead.backgroundColor,
       image:inputhead.image,
-      isdeleted:inputhead.isdeleted
-    });
+      isdeleted:inputhead.isdeleted,
+      ispinned: inputhead.ispinned,
+      isachieved:inputhead.isachieved
+    },{withCredentials:true});
     console.log("Note saved to database");
 
     const NewNote = response.data
@@ -214,11 +247,6 @@ async function addItem(inputhead) {
 async function DeleteItem(id) {
   const noteToDelete = items.find((item)=>item.id === id);   // get deleted note
 
-  // if (noteToDelete) {
-  //   setDeletedItems(prev => [...prev, {...noteToDelete,isdeleted:true}]); // run ONCE
-  // }
-  
-
   changeitems(prev =>
     prev.map(item=>
       item.id == id 
@@ -228,10 +256,10 @@ async function DeleteItem(id) {
   );
 
   try{
-    const response = await axios.patch(`http://localhost:3000/api/notes/${id}`, {
+    const response = await axios.patch(`${API_URL}/api/notes/${id}`, {
       isdeleted:true,
       image: noteToDelete.image
-    });
+    },{withCredentials:true});
   
    changeitems(prev =>
       prev.map(item =>
@@ -262,6 +290,9 @@ async function DeleteItem(id) {
   function Closepreview(){
     // console.log("clicked");
     changepageclickState(null);
+    changeactive(false);
+    
+    
   }
 
   const [activenote , changeactive] =useState(false);
@@ -329,9 +360,9 @@ async function newValue(event){
   )
 
   try{
-    await axios.patch(`http://localhost:3000/api/notes/${newID}`,{
+    await axios.patch(`${API_URL}/api/notes/${newID}`,{
       backgroundcolor: eventValue
-    });
+    },{withCredentials:true});
 
     changeitems(prev=>
       prev.map(item=>
@@ -369,9 +400,9 @@ async function newValue(event){
     )
 
     try{
-      await axios.patch(`http://localhost:3000/api/notes/${noteid}`,{
+      await axios.patch(`${API_URL}/api/notes/${noteid}`,{
         image:imagevalue==="null"? null :imagevalue
-      });
+      },{withCredentials:true});
 
       changeitems(prev=>
         prev.map(item=>
@@ -405,19 +436,36 @@ async function newValue(event){
 
 
   const [DeletedNotes,setDeletedNotes] = useState(false);
+  const [ArchivedNotes , setArchivedNotes] = useState(false);
 
   function Opendeleted(){
     setDeletedNotes(true);
+    setArchivedNotes(false);
   }
 
   function Notes(){
     setDeletedNotes(false);
+    setArchivedNotes(false);
 
     changeitems(prev=>
       prev.map(item=>
         item.isselected === true ? {...item, isselected:false}:item
       )
     );
+
+  }
+
+  function Archivedsection(){
+    setArchivedNotes(true);
+    setDeletedNotes(false); 
+    
+    
+    changeitems(prev=>
+      prev.map(item=>
+        item.isselected === true ? {...item, isselected:false}:item
+      )
+    );
+
 
   }
 
@@ -438,7 +486,20 @@ async function newValue(event){
 
   async function recycle(){
 
+   
+
     const selectedNotes = items.filter(item=> item.isselected ===true);
+
+    if(selectedNotes.length === 0){
+      return;
+    }
+
+    const confirmed = await askForDecision("Sure you wanna recycle ?");
+
+    if(!confirmed){
+      return;
+    }
+
 
     changeitems(prev=>
       prev.map(item=>
@@ -450,10 +511,10 @@ async function newValue(event){
 
     try{
       for(const note of selectedNotes){
-        await axios.patch(`http://localhost:3000/api/notes/${note.id}`,{
+        await axios.patch(`${API_URL}/api/notes/${note.id}`,{
           image:note.image,
           isdeleted:false
-        });
+        },{withCredentials:true});
       }
       console.log("Note is successfully recycled");
     }catch(error){
@@ -463,9 +524,25 @@ async function newValue(event){
 
  async function permanentDelete(){
 
+
+
+  
+
   const selecteditems = items.filter(
     item => item.isselected === true
   );
+
+  if(selecteditems.length===0){
+    return;
+  }
+
+
+
+  const confirmed = await askForDecision("Delete notes permanentely ");
+
+  if(!confirmed){
+    return;
+  }
 
   setselectall(false);
 
@@ -478,10 +555,11 @@ async function newValue(event){
 
   try{
     for(const item of selecteditems){
-      await axios.delete(`http://localhost:3000/api/notes`,{
+      await axios.delete(`${API_URL}/api/notes`,{
         data:{
           id:item.id
-        }
+        },
+        withCredentials:true,
       }
       );
       changeitems(prev=>
@@ -517,6 +595,7 @@ const[selectall ,setselectall] = useState(false);
 
   function OpenTools(){
     settoolbar(prev=>!prev);
+    changeactive(false);
   }
 
   async function SyncButton(){
@@ -533,42 +612,270 @@ const[selectall ,setselectall] = useState(false);
   const visibleNotes = items.filter((item) =>
     DeletedNotes
       ? item.isdeleted === true && item.terminated !== true
-      : item.isdeleted !== true && item.terminated !== true
+      : ArchivedNotes
+        ? item.isachieved === true && item.isdeleted !== true && item.terminated !== true
+        : item.isdeleted !== true &&
+          item.terminated !== true &&
+          item.isachieved !== true &&
+          item.ispinned !== true
   );
+
+  const pinnedNotes = items.filter((item)=>
+    !DeletedNotes &&
+    !ArchivedNotes &&
+    item.isdeleted !== true &&
+    item.terminated !== true &&
+    item.isachieved !== true &&
+    item.ispinned === true
+  );
+
+
+  async function Applypin(id){
+    changeitems(prev=>
+      prev.map((item) => item.id === id ?{...item , ispinned: !item.ispinned, synced:false}:item));
+  }
+  async function archiveset(id){
+    
+    const noteToArchive = items.find((item) => item.id === id);
+
+    if (!noteToArchive) return;
+
+    
+
+    const confirmed = await askForDecision(noteToArchive.isachieved ? "Remove from archive" : "Send to archive" );
+
+    if(!confirmed){
+      return;
+    }
+
+    const nextArchiveState = !noteToArchive.isachieved;
+
+    changeitems(prev=>
+      prev.map(item =>
+        item.id === id
+          ? {...item, isachieved: nextArchiveState, synced: false}
+          : item
+      )
+    );
+
+    try {
+      await axios.patch(`${API_URL}/api/notes/${id}`, {
+        isachieved: nextArchiveState,
+        image: noteToArchive.image,
+      }, {withCredentials: true});
+
+      changeitems(prev =>
+        prev.map(item =>
+          item.id === id ? {...item, synced: true} : item
+        )
+      );
+    } catch (error) {
+      console.log("Archive change will sync when you are back online");
+    }
+  }
+  
+  async function logoutUser(){
+
+
+    const confirmed = await askForDecision("Sure you want to logout");
+
+    if(!confirmed){
+      return;
+    }
+
+
+
+    try{
+      await axios.post(
+        `${API_URL}/api/auth/logout`, {},{
+          withCredentials:true,
+        }
+      );
+      alert("logged-out successfully");
+      navigate("/login");
+    }catch(error){
+      console.log("Logout failed",error);
+    }
+  }
+
+  function closeState(){
+    settoolbar(false);
+  }
+  const decisionResolveRef = useRef(null);
+  const[checkerText,setcheckerText] = useState("");
+  const [checkerOpen, setcheckerOpen]= useState(false);
+
+  function askForDecision(message){
+    setcheckerText(message);
+    setcheckerOpen(true);
+
+    return new Promise((resolve)=>{
+      decisionResolveRef.current = resolve;
+    });
+  }
+
+  function checkerSet(value){
+    setcheckerOpen(false);
+
+    decisionResolveRef.current?.(value);
+    decisionResolveRef.current = null;
+  }
+
+
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const userPanelRef = useRef(null);
+  const userIconRef = useRef(null);
+
+  useEffect(() => {
+    if (!isPanelOpen) return;
+
+    function closePanelWhenClickingOutside(event) {
+      const clickedPanel = userPanelRef.current?.contains(event.target);
+      const clickedUserIcon = userIconRef.current?.contains(event.target);
+
+      if (!clickedPanel && !clickedUserIcon) {
+        setIsPanelOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", closePanelWhenClickingOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", closePanelWhenClickingOutside);
+    };
+  }, [isPanelOpen]);
+
+function toggleUserPanel() {
+  setIsPanelOpen(previous => !previous);
+}
 
 
   return(
     <>
+
+    
+
+
     <Nav 
     RunSync={SyncButton}
-    MenuOpen={OpenSidebar} />
+    MenuOpen={OpenSidebar} 
+    handleLogout={logoutUser}
+    OpenPanel={toggleUserPanel}
+    userIconRef={userIconRef}
+    />
+
+    <Userpanel
+    handleLogout={logoutUser} 
+    UserpanelState={isPanelOpen}
+    panelRef={userPanelRef}
+    
+    />
+   
+    <Decision
+    checkermessage={checkerText}
+    finalcheck={checkerSet}
+    checkerState={checkerOpen}
+    
+    />
+   
+  
+
+
     <div className="center-grid-layout">
       
         <Sidebar 
         ShowDeletednotes={Opendeleted} 
         OpenNotes={Notes}
+        OpenArchived={Archivedsection}
         issidebaropen={sidebar}
-        // MenuClose={OpenSidebar}
-        // menuclosebuttoncheck={sidebar}
+        divclose={Closepreview}
         />
         <div className="empty-div"></div>
       
       <div className="main-content-side">
-      {DeletedNotes === false ?  <InputDiv onAdd={addItem}  colorbarOpener={palletpositionCheck} id={"input-div"} bcolor={palletvalue} bimage={palletimagevalue} opentoolbar={OpenTools} tool={toolbar}/> :
-       <Deleteiptions
+      {!DeletedNotes && !ArchivedNotes ? (
+        <InputDiv
+          onAdd={addItem}
+          colorbarOpener={palletpositionCheck}
+          id={"input-div"} 
+          bcolor={palletvalue} 
+          bimage={palletimagevalue} 
+          opentoolbar={OpenTools} 
+          tool={toolbar}  
+          closeTools={closeState}/>
+      ) : DeletedNotes ? (
+        <Deleteiptions
        recycleNotes = {recycle}
        delNotes={permanentDelete}
        selectAll={selectAllNotes}
        selectreset={selectall}
-       /> }
-  
+        />
+      ) : null}
+
+       <div
+       className="Notes-section"
+       style={{display: pinnedNotes.length === 0 || DeletedNotes || ArchivedNotes ? "none": ""}}
+       >
+        <h4 className="section-heading">Pins</h4>
+        <hr/>
+       <Masonry
+       breakpointCols={{ default: 5,1490:4, 1130: 3, 890: 2, 673: 1 }}
+       className="main-container"
+       columnClassName="my-masonry-grid_column"
+       >
+        
+        {
+          pinnedNotes.map((x)=>{
+            return <Note
+                    key={x.id} 
+                      id={x.id} 
+                      title={x.title}
+                      message={x.content}
+                      onDelete={DeleteItem} 
+                      divstyle={pagestyleapplyer} 
+                      oncheckid={pageclickstate}
+                      divclose={Closepreview} 
+                      pin={Applypin}
+                      archive={archiveset}
+                      colorbarCheck={palletpositionCheck} 
+                      notebackcolor={x.backgroundColor}
+                      selectedimage={x.image}
+                      ispinned={x.ispinned}
+                      archived={x.isachieved}
+                      updatebutton={updatebox}
+                      del={x.isdeleted}
+                      selectNote={Selectbox}
+                      show={DeletedNotes}
+                      selectState={x.isselected}
+                      open={pageclickstate}
+                      activeNote={pageclickstate}
+                      DeletedState={DeletedNotes}
+            
+                    
+                    />
+          })
+        }
+       </Masonry>
+       </div>
+
+
+
+      <div
+      className="Notes-section"
+      >
+        <h4
+        className="section-heading"
+        >
+          {DeletedNotes ? "Bin" : ArchivedNotes ? "Archive" : "Notes"}
+        </h4>
+        <hr/>
       <Masonry
       breakpointCols={{ default: 5,1490:4, 1130: 3, 890: 2, 673: 1 }}
       className="main-container"
       
       columnClassName="my-masonry-grid_column">
         
-        {visibleNotes.length === 0 ? (
+        {visibleNotes.length === 0 && pinnedNotes.length === 0 ? (
           <p className="no-notes">Empty</p>
         ) : (
           visibleNotes.map((x)=>{
@@ -580,9 +887,13 @@ const[selectall ,setselectall] = useState(false);
                       divstyle={pagestyleapplyer} 
                       oncheckid={pageclickstate}
                       divclose={Closepreview} 
+                      pin={Applypin}
+                      archive={archiveset}
                       colorbarCheck={palletpositionCheck} 
                       notebackcolor={x.backgroundColor}
                       selectedimage={x.image}
+                      ispinned={x.ispinned}
+                      archived={x.isachieved}
                       updatebutton={updatebox}
                       del={x.isdeleted}
                       selectNote={Selectbox}
@@ -590,12 +901,14 @@ const[selectall ,setselectall] = useState(false);
                       selectState={x.isselected}
                       open={pageclickstate}
                       activeNote={pageclickstate}
+                      DeletedState={DeletedNotes}
                     />
           })
         )}
                         
       </Masonry>
-      {activenote!==false && (
+      </div>
+      {activenote !== false && (
         <div className="pallet-frame"
          style={{
           top:palletposition.x,
@@ -626,10 +939,10 @@ const[selectall ,setselectall] = useState(false);
           changeUpdateboxstate(false);
 
           try{
-            await axios.patch(`http://localhost:3000/api/notes/${boxid}`,{
+            await axios.patch(`${API_URL}/api/notes/${boxid}`,{
               title :updatedtitle,
               content:updatedcontent
-            });
+            },{withCredentials:true});
 
             changeitems(prev =>
               prev.map(item=>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "./styles/sidebar.css";
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import PushPinIcon from '@mui/icons-material/PushPin';
@@ -30,8 +30,22 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
         setarchivestyle(false);
         setClickStyle(false);
     }
+
+    const [wincurrentwidth , setcurrentwidth] = useState(window.innerWidth < 500);
+    useEffect(()=>{
+        function setwidth(){
+            setcurrentwidth(window.innerWidth < 500);
+        }
+            window.addEventListener("resize" ,setwidth);
+
+            return ()=>{
+                window.removeEventListener("resize",setwidth);
+            
+        }
+
+    },[]);
     return(
-        <div className="side-bar" style={props.issidebaropen ? {transform:`translateX(0)`,backgroundColor:"#1f1e1e",zIndex:300}:{transform:`translate(-106px)`,zIndex:500}}>
+        <div className="side-bar" style={props.issidebaropen ? {transform:`translateX(0)`,backgroundColor:"#1f1e1e",zIndex:300}:wincurrentwidth ? {transform:`translate(-186px)`,zIndex:500}:{transform:`translate(-106px)`,zIndex:500}} >
             <ul className="side-bar-listelements">
                 <li className="list-contents" style={clickStyle === true ? {backgroundColor:"#9b4a2f",borderRadius:"0px 30px 30px 0px"}: {}} onClick={(e)=>{e.stopPropagation(),props.OpenNotes(); MainNotesStyle(); props.divclose()}} >Notes <LightbulbIcon /></li>
                 <li className="list-contents" style={archivestyle === true ? {backgroundColor:"#9b4a2f",borderRadius:"0px 30px 30px 0px"}: {}}  onClick={(e)=>{e.stopPropagation(),ArchiveStyle(); props.OpenArchived(); props.divclose()}}>Archive <ArchiveIcon /></li>

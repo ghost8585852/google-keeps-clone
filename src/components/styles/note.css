@@ -43,11 +43,11 @@
 .active-note >.note-visual-content >.inside-notes-container >.bottom{
     height:100%;
 }
-.bottom >p> a {
+.bottom  a {
     color: #d2d0d0f4;
 }
-.active-note >.note-visual-content >.inside-notes-container > .bottom > p > a {
-    color: #06c6f1;
+.active-note >.note-visual-content >.inside-notes-container > .bottom  a {
+    color: #18c3e9;
 }
 
 .active-note >.note-visual-content >.note-buttons-grid{
@@ -179,10 +179,12 @@
     }
      .active-note{
         font-size: 13px;
-        height: 100%;
-        width: 99.5%;
+        height: 100vh;
+        width: 100vw;
         border-radius: 0;
+        
         z-index: 600;
+        
     }
 
     .mobile-note-close{
@@ -301,7 +303,13 @@
  }
  @media(max-width:590px){
     .notes-container{
-        min-width: 88%;
+        min-width: 90%;
+    }
+ }
+ @media(max-width:500px){
+    .notes-container{
+        min-width: 100%;
+        margin-left: 0;
     }
  }
 

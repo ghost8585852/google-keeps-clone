@@ -1,16 +1,18 @@
 .updatebox-container{
     position: fixed;
-    background-color: rgb(255, 255, 255);
-    height: 600px;
-    width: 500px;
+    background-color: rgb(44, 44, 44);
+    height: 90%;
+    width: 600px;
     top:50%;
     left:50%;
     transform: translate(-50% , -50%);
-    padding: 20px 20px 0px 20px;
+    padding: 20px 0px 0px 0px;
     border-radius: 15px;
     border: 2px solid rgb(218, 211, 78);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    color: aliceblue;
     z-index:1000;
 
 }
@@ -24,12 +26,13 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 4;
-    background-color: rgba(0, 0, 0, 0.638);
+    z-index: 500;
+    background-color: rgba(0, 0, 0, 0.818);
 }
 .update-title{
     height: 70px;
     margin-bottom: 20px;
+    color: aliceblue;
     background:none;
     padding-left: 20px;
     font-size: 30px;
@@ -38,47 +41,63 @@
 
 }
 .update-text-area{
-    max-height: 400px;
-    min-height: 400px;
+    height: 80%;
     line-height: 26px;
     overflow: auto;
     border-radius: 20px;
     padding: 20px;
     font-size: 18px;
-    margin-bottom: 20px;
+    padding-bottom: 10px;
 }
+
+.update-text-area::-webkit-scrollbar {
+  height: 100%; /* Height of horizontal scrollbar */
+  width: 6px;
+  margin-left: 20px;
+
+}
+.update-text-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  
+}
+.update-text-area::-webkit-scrollbar-thumb {
+  background: rgb(218, 211, 78);
+}
+
 .update-button{
-    width: 150px;
-    height: 50px;
-    border-radius: 30px;
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color:rgb(218, 211, 78);
+    border: none;
     align-self: center;
     transition: 0.5s ease;
 }
 .update-button:hover{
-    background-color: rgb(19, 213, 243);
-    font-size: 20px;
+    background-color: rgb(237, 225, 5);
     transition: 0.5s ease;
 }
 .updatebox-editor{
     display: flex;
     width: 100%;
-    background-color: rgba(229, 206, 38, 0.84);
+    background-color: rgb(218, 211, 78);
 }
-@media(max-width:400px){
+@media(max-width:642px){
     .updatebox-container{
-        top: 310px;
-        height: 470px;
-        width: 80%;
-        left: 46.3%;
+        height: 100vh;
+        width: 100vw;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        
     }
-    .update-text-area{
-        max-height: 270px;
-        min-height: 270px;
-        font-size: 14px;
-        padding-bottom: 2px;
-        margin-bottom:10px;
+    .update-button{
+        font-size: 13px;
+        display: grid;
+        align-content: center;
     }
-    .update-title{
-        font-size: 24px;
-    }
+}
+ .update-text-area >.tiptap a{
+    color: rgb(14, 213, 227);
 }

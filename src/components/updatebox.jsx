@@ -70,7 +70,7 @@ function Updatebox({id, title,content,onUpdate}){
       />
 
       <EditorContent  className="update-text-area" editor={updateboxeditor}/>
-      <button className="update-button" onClick={handleSave}>Save</button>
+      <button className="update-button" onClick={handleSave}>Save Changes</button>
 
         </div>
 </div>

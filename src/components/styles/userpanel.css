@@ -5,7 +5,7 @@
     width: 350px;
     background-color: rgb(48, 47, 47);
     border: 1px solid rgb(158, 75, 30);
-    z-index: 100;
+    z-index: 900;
     overflow: hidden;
     display: grid;
     top: 80px;

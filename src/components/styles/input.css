@@ -189,28 +189,18 @@ height: 40px;
 @media(max-width:587px){
     .inputDiv-container{
         width:460px ;
-        transform: scale(0.8);
+        transform: scale(0.9);
     }
     .firstinput-div-container{
         width:460px ;
-        transform: scale(0.8);
+        transform: scale(0.9);
     }
 }
 @media(max-width:520px){
     .inputDiv-container{
-        width:400px;
+        width:98%;
     }
     .firstinput-div-container{
-        width: 400px;
-    }
-}
-@media(max-width:440px){
-    .inputDiv-container{
-        width: 330px;
-        align-self: flex-start;
-    }
-    .firstinput-div-container{
-        width: 330px;
-        align-self: flex-start;
+        width: 98%;
     }
 }

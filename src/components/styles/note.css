@@ -24,6 +24,7 @@
 .Note-heading{
     /* background-color: red; */
     overflow: hidden;
+    width:90%;
 }
 .top{
     min-height: 70px;
@@ -109,7 +110,7 @@
     border: none;
     color: rgb(254, 253, 252);
     top:10px;
-    right: -6px;
+    right: 0px;
     transform: scale(0.9);
     transition: 0.4s ease;
 
@@ -212,7 +213,7 @@
 .inside-notes-container{
     /* background-color: rgb(133, 69, 69); */
     /* border-bottom: 2px solid rgb(116, 115, 115); */
-    padding: 0px 6px 4px 20px;
+    padding: 0px 6px 4px 13px;
     height: 90%;
     position: relative;
     z-index: 1;
